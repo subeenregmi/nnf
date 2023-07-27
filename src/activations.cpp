@@ -16,8 +16,8 @@ namespace ActivationF{
 		assert(M->cols != 0);
 		assert(M->start != nullptr);
 
-		for(i=0; i<M->rows; i++){
-			for(j=0; j<M->cols; j++){
+		for(int i=0; i<M->rows; i++){
+			for(int j=0; j<M->cols; j++){
 				M->start[i*M->cols + j] = sigmoid(M->start[i*M->cols + j]);
 			}
 		}
@@ -28,8 +28,8 @@ namespace ActivationF{
 		assert(M->cols != 0);
 		assert(M->start != nullptr);
 
-		for(i=0; i<M->rows; i++){
-			for(j=0; j<M->cols; j++){
+		for(int i=0; i<M->rows; i++){
+			for(int j=0; j<M->cols; j++){
 				M->start[i*M->cols + j] = sigmoidD(M->start[i*M->cols + j]);
 			}
 		}

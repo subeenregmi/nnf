@@ -1,6 +1,13 @@
 #include "../include/matrix.hpp"
 
 namespace NMatrix{
+
+	Matrix::~Matrix(){
+		if(start != nullptr){
+			free(start);
+		}
+	}
+
 	// Init functions
 	void MEMORY_ALLOC(Matrix* M){
 		assert(M->rows != 0);	

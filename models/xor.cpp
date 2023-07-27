@@ -71,6 +71,7 @@ int main(){
 	int iterations = 10;
 	dataT x0;
 	dataT x1;
+	dataT yv;
 
 	MAT z1 = {.rows = 2, .cols = 1};
 	MAT A1 = {.rows = 2, .cols = 1};
@@ -92,10 +93,15 @@ int main(){
 		for(int j=0; j<4; j++){
 			x0 = GET_ITEM(&X, 0, j);
 			x1 = GET_ITEM(&X, 1, j);
+			yv = GET_ITEM(&Y, 0, j);
 			MAT x = {.rows = 2, .cols = 1};
 			NMatrix::MEMORY_ALLOC(&x);
 			NMatrix::SET_ITEM(&x, x0, 0, 0);
 			NMatrix::SET_ITEM(&x, x1, 1, 0);
+			MAT yi = {.rows = 1, .cols = 1};
+			NMatrix::MEMORY_ALLOC(&yi);
+			
+			NMatrix::SET_ITEM(&yi, yv, 0, 0); 
 
 			// calculating z1
 			NMatrix::DOT(&z1, &W1, &x);
@@ -103,7 +109,7 @@ int main(){
 			
 			// calculating a1 (applying sigmoid function)
 			NMatrix::COPY(&A1, &z1);	
-			ActivationF::NM_sigmoid(&A1);	
+			//ActivationF::NM_sigmoid(&A1);	
 			
 			// calculating z2
 			NMatrix::DOT(&z2, &W2, &A1);
@@ -115,18 +121,15 @@ int main(){
 			ActivationF::NM_sigmoid(&A2);	
 				
 			// total cost
+			LossF::NM_squared_error(&yb, &A2, &yi);
 
+			total_cost += NMatrix::TOTAL(&yb);
 		}
 
-		NMatrix::MEMORY_DEALLOC(&x);
+		std::cout << "Total cost: " << total_cost << std::endl;
+		std::cout << "--------------------------------------------" << std::endl;
 	}
 	
-	NMatrix::MEMORY_DEALLOC(&X);
-	NMatrix::MEMORY_DEALLOC(&Y);
-	NMatrix::MEMORY_DEALLOC(&W1);
-	NMatrix::MEMORY_DEALLOC(&W2);
-	NMatrix::MEMORY_DEALLOC(&b1);
-	NMatrix::MEMORY_DEALLOC(&b2);
 
 	return 0;
 }

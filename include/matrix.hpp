@@ -8,6 +8,7 @@ namespace NMatrix{
 		int rows = 0;
 		int cols = 0;
 		dataT* start = nullptr;
+		~Matrix();
 	};
 
 	// Init functions
@@ -15,6 +16,7 @@ namespace NMatrix{
 	void MEMORY_DEALLOC(Matrix* M);
 	void IDENTITY(Matrix* M);
 	void RANDOMIZE(Matrix* M);
+	void COPY(Matrix* D, Matrix* M);
 	
 	// Math functions
 	void DOT(Matrix* D, Matrix* A, Matrix* B);
