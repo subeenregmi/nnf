@@ -2,6 +2,6 @@
 
 namespace LossF{
 	dataT squared_error(dataT x, dataT y){
-		return pow(x-y, 2);
+		return pow(y-x, 2);
 	}
 }
