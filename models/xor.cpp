@@ -73,15 +73,24 @@ int main(){
 	int iterations = 10;
 	dataT x0;
 	dataT x1;
-	MAT A1;
-	MAT A2;
+	MAT A1 = {.rows = 2, .cols = 1};
+	MAT A2 = {.rows = 1, .cols = 1};
+	NMatrix::MEMORY_ALLOC(&A1);
+	NMatrix::MEMORY_ALLOC(&A2);
 
 	for(int i=0; i<10; i++){
 		for(int j=0; j<4; j++){
 			x0 = GET_ITEM(&X, 0, j);
 			x1 = GET_ITEM(&X, 1, j);
-			std::cout << x0 << x1 << std::endl;
+			MAT x = {.rows = 2, .cols = 1};
+			NMatrix::MEMORY_ALLOC(&x);
+			NMatrix::SET_ITEM(&x, x0, 0, 0);
+			NMatrix::SET_ITEM(&x, x1, 1, 0);
+
+
 		}
+
+		NMatrix::MEMORY_DEALLOC(&x);
 	}
 	
 	NMatrix::MEMORY_DEALLOC(&X);
