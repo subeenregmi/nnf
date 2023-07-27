@@ -22,6 +22,7 @@ namespace NMatrix{
 	void SUBTRACT(Matrix* D, Matrix* A, Matrix* B);
 	void SCALE(Matrix* M, dataT scalar);	
 	void TRANSPOSE(Matrix* M);
+	dataT TOTAL(Matrix* M);
 
 	// Miscellaneous functions
 	void PRINT(Matrix* M);

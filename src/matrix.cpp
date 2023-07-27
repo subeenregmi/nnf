@@ -45,6 +45,18 @@ namespace NMatrix{
 		}
 	}
 
+	void COPY(Matrix* D, Matrix* M){
+		assert(D->rows == M->rows);
+		assert(D->cols == M->cols);
+		assert(M->start != nullptr);
+		assert(D->start != nullptr);
+
+		for(int i=0; i<M->rows; i++){
+			for(int j=0; j<M->cols; j++){
+				D->start[i*M->cols + j] = M->start[i*M->cols + j];
+			}
+		}
+	}
 
 	// Mathematical functions
 
@@ -79,26 +91,6 @@ namespace NMatrix{
 		}
 	}
 	
-	void TRANSPOSE(Matrix* M){
-		assert(M->rows != 0);
-		assert(M->cols != 0);
-		assert(M->start != nullptr);
-
-		Matrix D = {.rows = M->cols, .cols = M->rows};
-		MEMORY_ALLOC(&D);
-
-		for(int i=0; i<M->rows; i++){
-			for(int j=0; j<M->cols; j++){
-				D.start[j*D.cols + i] = M->start[i*M->cols + j];
-			}
-		}
-
-		MEMORY_DEALLOC(M);
-		M->rows = D.rows;
-		M->cols = D.cols;
-		M->start = D.start;
-	}
-
 	void SUBTRACT(Matrix* D, Matrix* A, Matrix* B){
 		assert(A->rows == B->rows);
 		assert(A->cols == B->cols);
@@ -126,6 +118,41 @@ namespace NMatrix{
 			}
 		}
 	}
+
+	void TRANSPOSE(Matrix* M){
+		assert(M->rows != 0);
+		assert(M->cols != 0);
+		assert(M->start != nullptr);
+
+		Matrix D = {.rows = M->cols, .cols = M->rows};
+		MEMORY_ALLOC(&D);
+
+		for(int i=0; i<M->rows; i++){
+			for(int j=0; j<M->cols; j++){
+				D.start[j*D.cols + i] = M->start[i*M->cols + j];
+			}
+		}
+
+		MEMORY_DEALLOC(M);
+		M->rows = D.rows;
+		M->cols = D.cols;
+		M->start = D.start;
+	}
+
+	dataT TOTAL(Matrix* M){
+		assert(M->rows != 0);
+		assert(M->cols != 0);
+		assert(M->start != nullptr);
+
+		dataT total = 0;
+		for(int i=0; i<M->rows; i++){
+			for(int j=0; j<M->cols; j++){
+				total += M->start[i*M->cols + j];
+			}
+		}
+		return total;
+	}
+
 
 	// Miscellaneous functions 
 	void PRINT(Matrix* M){

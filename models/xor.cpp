@@ -1,11 +1,9 @@
 #include "../include/generic.hpp"
 #include "../include/matrix.hpp"
+#include "../include/activations.hpp"
+#include "../include/loss.hpp"
 
 typedef NMatrix::Matrix MAT;
-
-void forward(MAT* Z, MAT* W, MAT* X, MAT* B){
-	
-}
 
 int main(){
 
@@ -73,12 +71,24 @@ int main(){
 	int iterations = 10;
 	dataT x0;
 	dataT x1;
+
+	MAT z1 = {.rows = 2, .cols = 1};
 	MAT A1 = {.rows = 2, .cols = 1};
-	MAT A2 = {.rows = 1, .cols = 1};
+
+	NMatrix::MEMORY_ALLOC(&z1);
 	NMatrix::MEMORY_ALLOC(&A1);
+
+	MAT z2 = {.rows = 1, .cols = 1};
+	MAT A2 = {.rows = 1, .cols = 1};
+
+	NMatrix::MEMORY_ALLOC(&z2);
 	NMatrix::MEMORY_ALLOC(&A2);
 
+	MAT yb = {.rows = 1, .cols = 1};
+	NMatrix::MEMORY_ALLOC(&yb);
+
 	for(int i=0; i<10; i++){
+		dataT total_cost = 0.0f;
 		for(int j=0; j<4; j++){
 			x0 = GET_ITEM(&X, 0, j);
 			x1 = GET_ITEM(&X, 1, j);
@@ -87,6 +97,24 @@ int main(){
 			NMatrix::SET_ITEM(&x, x0, 0, 0);
 			NMatrix::SET_ITEM(&x, x1, 1, 0);
 
+			// calculating z1
+			NMatrix::DOT(&z1, &W1, &x);
+			NMatrix::ADD(&z1, &z1, &b1);
+			
+			// calculating a1 (applying sigmoid function)
+			NMatrix::COPY(&A1, &z1);	
+			ActivationF::NM_sigmoid(&A1);	
+			
+			// calculating z2
+			NMatrix::DOT(&z2, &W2, &A1);
+			NMatrix::ADD(&z2, &z2, &b2);
+
+			// calculating a2 (applying sigmoid function)
+			
+			NMatrix::COPY(&A2, &z2);	
+			ActivationF::NM_sigmoid(&A2);	
+				
+			// total cost
 
 		}
 
