@@ -1,10 +1,9 @@
 #include "../include/matrix.hpp"
 
 int main(){
-	NMatrix::Matrix mat = {.rows=2, .cols=2};
-	NMatrix::MEMORY_ALLOC(&mat);
-	NMatrix::PRINT(&mat);
+	NMatrix::Matrix mat(2, 2);
+	NMatrix::PRINT(&mat, "w1");
 	mat[1][1] = 10.0f;
-	NMatrix::PRINT(&mat);
+	NMatrix::PRINT(&mat, "w1");
 	return 0;
 }

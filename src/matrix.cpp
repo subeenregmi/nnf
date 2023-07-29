@@ -8,34 +8,23 @@ namespace NMatrix{
 	}
 
 	Matrix::Matrix(int row, int col){
-
+		assert(row != 0);
+		assert(col != 0);
+		rows = row;
+		cols = col;
+		start = (dataT*)malloc(sizeof(dataT)*rows*cols);
 	}
 
 	Matrix::~Matrix(){
-		if(start != nullptr){
-			free(start);
-		}
+		free(start);
 	}
 
 	// Init functions
-	void MEMORY_ALLOC(Matrix* M){
-		assert(M->rows != 0);	
-		assert(M->cols != 0);
-		assert(M->start == nullptr && "Matrix has already been allocated, destroy/free memory first");
-		M->start = (dataT*)malloc(sizeof(dataT)*M->rows*M->cols);
-		assert(M->start != nullptr);
-	}
-
-	void MEMORY_DEALLOC(Matrix* M){
-		assert(M->start != nullptr && "Matrix has not been allocated.");
-		free(M->start);
-		M->start = nullptr;
-	}
 
 	void IDENTITY(Matrix* M){
 		assert(M->rows != 0);
 		assert(M->cols != 0);
-		assert(M->start != nullptr);
+		assert(M->rows == M->cols);
 
 		for(int i=0; i<M->rows; i++){
 			for(int j=0; j<M->cols; j++){
@@ -50,10 +39,6 @@ namespace NMatrix{
 	}
 
 	void RANDOMIZE(Matrix* M){
-		assert(M->rows != 0);
-		assert(M->cols != 0);
-		assert(M->start != nullptr);
-
 		for(int i=0; i<M->rows; i++){
 			for(int j=0; j<M->cols; j++){
 				M->start[i*M->cols + j] = randD();
@@ -64,8 +49,6 @@ namespace NMatrix{
 	void COPY(Matrix* D, Matrix* M){
 		assert(D->rows == M->rows);
 		assert(D->cols == M->cols);
-		assert(M->start != nullptr);
-		assert(D->start != nullptr);
 
 		for(int i=0; i<M->rows; i++){
 			for(int j=0; j<M->cols; j++){
@@ -96,9 +79,6 @@ namespace NMatrix{
 		assert(A->cols == B->cols);
 		assert(D->rows == A->rows);
 		assert(D->cols == A->cols);
-		assert(A->start != nullptr && "Matrix A (2nd param) has not been allocated");
-		assert(B->start != nullptr && "Matrix B (3rd param) has not been allocated");
-		assert(D->start != nullptr && "Matrix D (1nd param) has not been allocated");
 		
 		for(int i=0; i<A->rows; i++){
 			for(int j=0; j<A->cols; j++){
@@ -112,9 +92,6 @@ namespace NMatrix{
 		assert(A->cols == B->cols);
 		assert(D->rows == A->rows);
 		assert(D->cols == A->cols);
-		assert(A->start != nullptr && "Matrix A (2nd param) has not been allocated");
-		assert(B->start != nullptr && "Matrix B (3rd param) has not been allocated");
-		assert(D->start != nullptr && "Matrix D (1nd param) has not been allocated");
 		
 		for(int i=0; i<A->rows; i++){
 			for(int j=0; j<A->cols; j++){
@@ -126,7 +103,6 @@ namespace NMatrix{
 	void SCALE(Matrix* M, dataT scalar){
 		assert(M->rows != 0);
 		assert(M->cols != 0);
-		assert(M->start != nullptr);
 
 		for(int i=0; i<M->rows; i++){
 			for(int j=0; j<M->cols; j++){
@@ -136,29 +112,19 @@ namespace NMatrix{
 	}
 
 	void TRANSPOSE(Matrix* M){
-		assert(M->rows != 0);
-		assert(M->cols != 0);
-		assert(M->start != nullptr);
-
-		Matrix D = {.rows = M->cols, .cols = M->rows};
-		MEMORY_ALLOC(&D);
-
+		Matrix D(M->cols, M->rows);		
 		for(int i=0; i<M->rows; i++){
 			for(int j=0; j<M->cols; j++){
 				D.start[j*D.cols + i] = M->start[i*M->cols + j];
 			}
 		}
-
-		MEMORY_DEALLOC(M);
 		M->rows = D.rows;
 		M->cols = D.cols;
 		M->start = D.start;
+		M->~Matrix();
 	}
 
 	dataT TOTAL(Matrix* M){
-		assert(M->rows != 0);
-		assert(M->cols != 0);
-		assert(M->start != nullptr);
 
 		dataT total = 0;
 		for(int i=0; i<M->rows; i++){
@@ -171,15 +137,18 @@ namespace NMatrix{
 
 
 	// Miscellaneous functions 
-	void PRINT(Matrix* M){
+	void PRINT(Matrix* M, std::string label){
+		std::cout << label << " = [" << std::endl << std::endl;
 		for(int i=0; i<M->rows; i++){
 			for(int j=0; j<M->cols; j++){
-				printf("%f	", GET_ITEM(M, i, j));
+				printf("%f	", M->start[i*M->cols + j]);
 			}
 			printf("\n\n");
 		}
+		std::cout << "]" << std::endl;
 	}
 
+	/*
 	dataT GET_ITEM(Matrix* M, int rows, int cols){
 		return M->start[rows*M->cols + cols];
 	}
@@ -191,4 +160,5 @@ namespace NMatrix{
 		
 		M->start[rows*M->cols + cols] = item;
 	}
+	*/
 }

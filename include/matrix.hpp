@@ -15,8 +15,6 @@ namespace NMatrix{
 	};
 
 	// Init functions
-	void MEMORY_ALLOC(Matrix* M);
-	void MEMORY_DEALLOC(Matrix* M);
 	void IDENTITY(Matrix* M);
 	void RANDOMIZE(Matrix* M);
 	void COPY(Matrix* D, Matrix* M);
@@ -30,8 +28,10 @@ namespace NMatrix{
 	dataT TOTAL(Matrix* M);
 
 	// Miscellaneous functions
-	void PRINT(Matrix* M);
+	void PRINT(Matrix* M, std::string label);
+	/*
 	dataT GET_ITEM(Matrix* M, int rows, int cols);
 	void SET_ITEM(Matrix* M, dataT item, int rows, int cols);
+	*/
 }
 #endif
