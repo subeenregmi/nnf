@@ -2,6 +2,15 @@
 
 namespace NMatrix{
 
+	DoubleSubscript Matrix::operator[](int r){
+		DoubleSubscript DS(start, r, cols);
+		return DS;
+	}
+
+	Matrix::Matrix(int row, int col){
+
+	}
+
 	Matrix::~Matrix(){
 		if(start != nullptr){
 			free(start);

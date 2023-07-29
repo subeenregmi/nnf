@@ -2,12 +2,15 @@
 #define MATRIX
 
 #include "generic.hpp"
+#include "doublesubscript.hpp"
 
 namespace NMatrix{
 	struct Matrix{
-		int rows = 0;
-		int cols = 0;
-		dataT* start = nullptr;
+		int rows;
+		int cols;
+		dataT* start;
+		DoubleSubscript operator[](int r);
+		Matrix(int row, int col);
 		~Matrix();
 	};
 
