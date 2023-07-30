@@ -3,6 +3,8 @@
 namespace NMatrix{
 
 	DoubleSubscript Matrix::operator[](int r){
+		assert(r >= 0);
+		assert(r < rows);
 		DoubleSubscript DS(start, r, cols);
 		return DS;
 	}

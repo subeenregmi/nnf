@@ -1,6 +1,7 @@
 NAME:=nnf.out
 COMPILER:=g++
 CURRENTMODEL:=xor
+CURRENTTEST:=test
 
 INCLUDEDIR:=./include/
 SRCDIR:=./src/
@@ -11,19 +12,20 @@ OUTDIR:=./build/out/
 
 SRCFILES:=$(wildcard $(SRCDIR)*.cpp)
 SRCOBJECTS:=$(patsubst %.cpp, %.o, $(SRCFILES))
-DEPFILES:= $(patsubst %.cpp, %.d, $(SRCFILES))
 MODELFILES:= $(wildcard $(MODELDIR)$(CURRENTMODEL).cpp)
 MODELOBJECTS:=$(patsubst %.cpp, %.o, $(MODELFILES))
 MODELNAME:= $(patsubst %.cpp, %.out, $(MODELFILES))
 TESTFILES:= $(wildcard $(TESTDIR)*.cpp)
-TESTOBJECTS:=$(patsubst %.cpp, %.o, $(SRCFILES))
+TESTOBJECTS:=$(patsubst %.cpp, %.o, $(TESTFILES))
+
+DEPFILES:= $(patsubst %.cpp, %.d, $(SRCFILES) $(MODELFILES) $(TESTFILES))
 
 OPT:=-O0
 DEPFLAGS:=-MP -MD 
 COMPILERFLAGS:= -Wall -Wextra $(OPT) $(DEPFLAGS)-I$(INCLUDEDIR)
 
 all:
-	echo "Nothing..."
+	echo $(DEPFILES)
 
 model: $(CURRENTMODEL)
 
@@ -33,8 +35,17 @@ $(CURRENTMODEL): $(MODELOBJECTS) $(SRCOBJECTS)
 %.o : %.cpp
 	$(COMPILER) $(COMPILERFLAGS) -c -o $@ $<
 
-run:
-	$(OUTDIR)$(CURRENTMODEL)
+
+tests: $(CURRENTTEST)
+
+$(CURRENTTEST) : $(SRCOBJECTS) $(TESTOBJECTS)
+	$(COMPILER) -o $(TESTDIR)$@ $(SRCOBJECTS) $(TESTOBJECTS)
 
 clean:
-	rm -rf $(SRCOBJECTS) $(DEPFILES) $(TESTOBJECTS) $(MODELOBJECTS) 
+	rm -rf $(DEPFILES) $(SRCOBJECTS) $(MODELOBJECTS) $(TESTOBJECTS)
+
+run: 
+	$(OUTDIR)$(CURRENTMODEL)
+
+runtests:
+	@$(TESTDIR)$(CURRENTTEST)

@@ -7,5 +7,7 @@ DoubleSubscript::DoubleSubscript(dataT* m, int r, int MAX_COLS){
 }
 
 dataT &DoubleSubscript::operator[](int col){
+	assert(col >= 0);
+	assert(col < COLS);
 	return mat[row*COLS + col];
 }
