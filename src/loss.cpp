@@ -10,8 +10,8 @@ namespace LossF{
 	}
 	
 	void NM_squared_error(NMatrix::Matrix* D, NMatrix::Matrix* x, NMatrix::Matrix* y){
-		assert(D->rows == x->rows == y->rows);
-		assert(D->cols == x->cols == y->cols);
+		assert((D->rows == x->rows) == y->rows);
+		assert((D->cols == x->cols) == y->cols);
 		assert(D->start != nullptr);
 		assert(x->start != nullptr);
 		assert(y->start != nullptr);
@@ -24,8 +24,8 @@ namespace LossF{
 	}
 
 	void NM_squared_error_D(NMatrix::Matrix* D, NMatrix::Matrix* x, NMatrix::Matrix* y){
-		assert(D->rows == x->rows == y->rows);
-		assert(D->cols == x->cols == y->cols);
+		assert((D->rows == x->rows) == y->rows);
+		assert((D->cols == x->cols) == y->cols);
 		assert(D->start != nullptr);
 		assert(x->start != nullptr);
 		assert(y->start != nullptr);
