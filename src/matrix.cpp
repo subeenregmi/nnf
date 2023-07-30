@@ -114,16 +114,23 @@ namespace NMatrix{
 	}
 
 	void TRANSPOSE(Matrix* M){
-		Matrix D(M->cols, M->rows);		
+		dataT arr[M->rows][M->cols];
+		int rows = M->rows;
+		int cols = M->cols;
 		for(int i=0; i<M->rows; i++){
 			for(int j=0; j<M->cols; j++){
-				D.start[j*D.cols + i] = M->start[i*M->cols + j];
+				arr[i][j] = M->start[i*M->cols + j];
 			}
 		}
-		M->rows = D.rows;
-		M->cols = D.cols;
-		M->start = D.start;
-		M->~Matrix();
+		free(M->start);
+		M->rows = cols;
+		M->cols = rows;
+		M->start = (dataT*)malloc(sizeof(dataT)*rows*cols);
+		for(int i=0; i<M->rows; i++){
+			for(int j=0; j<M->cols; j++){
+				M->start[i*M->cols + j] = arr[j][i];
+			}
+		}
 	}
 
 	dataT TOTAL(Matrix* M){

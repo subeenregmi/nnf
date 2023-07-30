@@ -97,6 +97,9 @@ void Tester(){
 		HandleTest("Checking if copying 2x2 full matrix works like expected");
 		passed = (NMatrix::TOTAL(&m), 10);
 		HandleTest("Checking if total works properly");
+		NMatrix::PRINT(&m, "pretranspose");
+		NMatrix::TRANSPOSE(&m);
+		NMatrix::PRINT(&m, "transposed");
 	}
 
 	if(true){
@@ -110,6 +113,9 @@ void Tester(){
 		HandleTest("Checking if dot product with indentity works like expected");
 	}
 	
+	if(true){
+
+	}
 	std::cout << passed_tests << "/" << total_tests << " passed." << std::endl;
 	std::cout << "Failed tests" << std::endl;
 	std::cout << "-----------------------" << std::endl;

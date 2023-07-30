@@ -25,7 +25,7 @@ DEPFLAGS:=-MP -MD
 COMPILERFLAGS:= -Wall -Wextra $(OPT) $(DEPFLAGS)-I$(INCLUDEDIR)
 
 all:
-	echo $(DEPFILES)
+	echo "model - to build the current model, test - to build the current tests" 
 
 model: $(CURRENTMODEL)
 
