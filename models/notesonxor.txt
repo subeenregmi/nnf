@@ -1,0 +1,5 @@
+00:42 31-Jul-23: my loss what declining but not going down, it stopped after a limit, 
+i think this was the case, as i didnt add a nonlinear function (sigmoid) onto the hidden
+layer, thus its just a linear combination of the input layer, thus the network could be 
+simplified to just two input nodes and one sigmoidal output node, and that cant work for 
+xor, i need to change this and try to figure out why the loss is going down.
