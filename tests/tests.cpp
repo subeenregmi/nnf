@@ -97,9 +97,6 @@ void Tester(){
 		HandleTest("Checking if copying 2x2 full matrix works like expected");
 		passed = (NMatrix::TOTAL(&m), 10);
 		HandleTest("Checking if total works properly");
-		NMatrix::PRINT(&m, "pretranspose");
-		NMatrix::TRANSPOSE(&m);
-		NMatrix::PRINT(&m, "transposed");
 	}
 
 	if(true){
@@ -114,8 +111,23 @@ void Tester(){
 	}
 	
 	if(true){
-
+		NMatrix::Matrix a(2, 2);
+		NMatrix::Matrix b(2, 2);
+		NMatrix::Matrix d(2, 2);
+		NMatrix::RANDOMIZE(&a);
+		NMatrix::RANDOMIZE(&b);
+		NMatrix::HPRODUCT(&d, &a, &b);
+		passed = true;
+		for(int i=0; i<2; i++){
+			for(int j=0; j<2; j++){
+				if(d[i][j] != a[i][j] * b[i][j]){
+					passed = false;
+				}
+			}
+		}
+		HandleTest("Checking if hammard product is implemented successfully");
 	}
+
 	std::cout << passed_tests << "/" << total_tests << " passed." << std::endl;
 	std::cout << "Failed tests" << std::endl;
 	std::cout << "-----------------------" << std::endl;

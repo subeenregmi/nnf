@@ -26,6 +26,7 @@ namespace NMatrix{
 	void SCALE(Matrix* M, dataT scalar);	
 	void TRANSPOSE(Matrix* M);
 	dataT TOTAL(Matrix* M);
+	void HPRODUCT(Matrix*D, Matrix*A, Matrix* B);
 
 	// Miscellaneous functions
 	void PRINT(Matrix* M, std::string label);

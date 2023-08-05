@@ -144,6 +144,18 @@ namespace NMatrix{
 		return total;
 	}
 
+	void HPRODUCT(Matrix* D, Matrix* A, Matrix* B){
+		assert(A->rows == B->rows);
+		assert(A->cols == B->cols);
+		assert(D->rows == B->rows);
+		assert(D->rows == B->rows);
+	
+		for(int i=0; i<A->rows; i++){
+			for(int j=0; j<A->cols; j++){
+				D->start[i*D->cols + j] = A->start[i*D->cols +j] * B->start[i*D->cols + j];
+			}
+		}
+	}
 
 	// Miscellaneous functions 
 	void PRINT(Matrix* M, std::string label){
