@@ -1,185 +1,177 @@
-#include "../include/matrix.hpp"
+#include "matrix.hpp"
 
-namespace NMatrix{
+Matrix::Matrix(int r, int c, bool identity=false){
+	assert(r != 0);
+	assert(c != 0);
 
-	DoubleSubscript Matrix::operator[](int r){
-		assert(r >= 0);
-		assert(r < rows);
-		DoubleSubscript DS(start, r, cols);
-		return DS;
+	rows = r; 
+	cols = c;	
+
+	start = (dataT*)calloc(r*c, sizeof(dataT));
+
+	if(identity){
+		assert(r == c);
+		this->makeIdentity();
 	}
+}
 
-	Matrix::Matrix(int row, int col){
-		assert(row != 0);
-		assert(col != 0);
-		rows = row;
-		cols = col;
-		start = (dataT*)malloc(sizeof(dataT)*rows*cols);
-	}
+Matrix::~Matrix(){
+	free(start);
+}	
 
-	Matrix::~Matrix(){
-		free(start);
-	}
+DoubleSubscript Matrix::operator[](int r){
+	assert(r >= 0);
+	assert(r < rows);
+	DoubleSubscript DS(start, r, cols);
+	return DS;
+}
 
-	// Init functions
-
-	void IDENTITY(Matrix* M){
-		assert(M->rows != 0);
-		assert(M->cols != 0);
-		assert(M->rows == M->cols);
-
-		for(int i=0; i<M->rows; i++){
-			for(int j=0; j<M->cols; j++){
-				if(i == j){
-					M->start[i*M->cols + j] = 1.0f;
-				}
-				else{
-					M->start[i*M->cols + j] = 0.0f;
-				}
-			}
+void Matrix::copy(Matrix* m){
+	assert(rows == m->rows);
+	assert(cols == m->cols);
+	for(int i=0; i<m->rows; i++){
+		for(int j=0; j<m->cols; j++){
+			(*this)[i][j] = (*m)[i][j];
 		}
 	}
+}
 
-	void RANDOMIZE(Matrix* M){
-		for(int i=0; i<M->rows; i++){
-			for(int j=0; j<M->cols; j++){
-				M->start[i*M->cols + j] = randD();
-			}
+void Matrix::randomize(){
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<cols; j++){
+			(*this)[i][j] = randD();
 		}
 	}
+}
 
-	void COPY(Matrix* D, Matrix* M){
-		assert(D->rows == M->rows);
-		assert(D->cols == M->cols);
-
-		for(int i=0; i<M->rows; i++){
-			for(int j=0; j<M->cols; j++){
-				D->start[i*M->cols + j] = M->start[i*M->cols + j];
-			}
-		}
+void Matrix::print(std::string label=""){
+	if(label != ""){
+		std::cout << label <<  " = [" << std::endl << std::endl;
+	}
+	else{
+		std::cout << "[" << std::endl << std::endl;
 	}
 
-	// Mathematical functions
-
-	void DOT(Matrix* D, Matrix* A, Matrix* B){
-		// D = A * B
-		assert(A->cols == B->rows);	
-		assert(D->rows == A->rows);
-		assert(D->cols == B->cols);
-
-		for(int i=0; i<A->rows; i++){
-			for(int j=0; j<B->cols; j++){
-				for(int k=0; k<A->cols; k++){
-					D->start[i*D->cols+j] += A->start[i*A->cols+k] * B->start[k*B->rows+j];
-				}
-			}
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<cols; j++){
+			printf("%f	", (*this)[i][j]);
 		}
+		printf("\n\n");
 	}
+	std::cout << "]" << std::endl;
+}
 
-	void ADD(Matrix* D, Matrix* A, Matrix* B){
-		assert(A->rows == B->rows);
-		assert(A->cols == B->cols);
-		assert(D->rows == A->rows);
-		assert(D->cols == A->cols);
-		
-		for(int i=0; i<A->rows; i++){
-			for(int j=0; j<A->cols; j++){
-				D->start[i*A->cols + j] = A->start[i*A->cols + j] + B->start[i*A->cols + j];
+void Matrix::dot(Matrix* m){
+
+	assert(cols == m->rows);	
+	Matrix d(rows, m->cols);
+
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<m->cols; j++){
+			for(int k=0; k<cols; k++){
+				d[i][j] += (*this)[i][k] * (*m)[k][j];
 			}
 		}
 	}
 	
-	void SUBTRACT(Matrix* D, Matrix* A, Matrix* B){
-		assert(A->rows == B->rows);
-		assert(A->cols == B->cols);
-		assert(D->rows == A->rows);
-		assert(D->cols == A->cols);
-		
-		for(int i=0; i<A->rows; i++){
-			for(int j=0; j<A->cols; j++){
-				D->start[i*A->cols + j] = A->start[i*A->cols + j] - B->start[i*A->cols + j];
-			}
+	free(start);
+	cols = m->cols;
+	start = (dataT*)calloc(rows*cols, sizeof(dataT));
+
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<cols; j++){
+			(*this)[i][j] = d[i][j];
 		}
 	}
+}
 
-	void SCALE(Matrix* M, dataT scalar){
-		assert(M->rows != 0);
-		assert(M->cols != 0);
+void Matrix::add(Matrix* m){
+	assert(rows == m->rows);
+	assert(cols == m->cols);
 
-		for(int i=0; i<M->rows; i++){
-			for(int j=0; j<M->cols; j++){
-				M->start[i*M->cols + j] *= scalar;
-			}
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<cols; j++){
+			(*this)[i][j] += (*m)[i][j];
 		}
 	}
+}
 
-	void TRANSPOSE(Matrix* M){
-		dataT arr[M->rows][M->cols];
-		int rows = M->rows;
-		int cols = M->cols;
-		for(int i=0; i<M->rows; i++){
-			for(int j=0; j<M->cols; j++){
-				arr[i][j] = M->start[i*M->cols + j];
-			}
-		}
-		free(M->start);
-		M->rows = cols;
-		M->cols = rows;
-		M->start = (dataT*)malloc(sizeof(dataT)*rows*cols);
-		for(int i=0; i<M->rows; i++){
-			for(int j=0; j<M->cols; j++){
-				M->start[i*M->cols + j] = arr[j][i];
-			}
+void Matrix::subtract(Matrix* m){
+	assert(rows == m->rows);
+	assert(cols == m->cols);
+
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<cols; j++){
+			(*this)[i][j] -= (*m)[i][j];
 		}
 	}
+}
 
-	dataT TOTAL(Matrix* M){
-
-		dataT total = 0;
-		for(int i=0; i<M->rows; i++){
-			for(int j=0; j<M->cols; j++){
-				total += M->start[i*M->cols + j];
-			}
+void Matrix::scale(dataT sf){
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<cols; j++){
+			(*this)[i][j] *= sf;
 		}
-		return total;
 	}
+}
 
-	void HPRODUCT(Matrix* D, Matrix* A, Matrix* B){
-		assert(A->rows == B->rows);
-		assert(A->cols == B->cols);
-		assert(D->rows == B->rows);
-		assert(D->rows == B->rows);
+void Matrix::transpose(){
+	Matrix d(cols, rows);
 	
-		for(int i=0; i<A->rows; i++){
-			for(int j=0; j<A->cols; j++){
-				D->start[i*D->cols + j] = A->start[i*D->cols +j] * B->start[i*D->cols + j];
-			}
+	for(int i=0; i<cols; i++){
+		for(int j=0; j<rows; j++){
+			d[j][i] = (*this)[i][j];
 		}
 	}
 
-	// Miscellaneous functions 
-	void PRINT(Matrix* M, std::string label){
-		std::cout << label << " = [" << std::endl << std::endl;
-		for(int i=0; i<M->rows; i++){
-			for(int j=0; j<M->cols; j++){
-				printf("%f	", M->start[i*M->cols + j]);
-			}
-			printf("\n\n");
+	free(start);
+	rows = d.rows;
+	cols = d.cols;
+	start = (dataT*)calloc(rows*cols, sizeof(dataT));
+
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<cols; j++){
+			(*this)[i][j] = d[i][j];
 		}
-		std::cout << "]" << std::endl;
-	}
+	}	
+}
 
-	/*
-	dataT GET_ITEM(Matrix* M, int rows, int cols){
-		return M->start[rows*M->cols + cols];
-	}
+void Matrix::hproduct(Matrix* m){
+	assert(rows == m->rows);
+	assert(cols == m->cols);
 
-	void SET_ITEM(Matrix* M, dataT item, int rows, int cols){
-		assert(M->start != nullptr);
-		assert(M->rows > rows);
-		assert(M->cols > cols);
-		
-		M->start[rows*M->cols + cols] = item;
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<cols; j++){
+			(*this)[i][j] *= (*m)[i][j];
+		}
 	}
-	*/
+}
+
+dataT Matrix::total(){
+	dataT total = 0;
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<cols; j++){
+			total += (*this)[i][j];
+		}
+	}
+	return total; 
+}
+
+void Matrix::makeIdentity(){
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<cols; j++){
+			if(i == j){
+				(*this)[i][j] = 1;
+			}
+		}
+	}
+}
+
+int main(){
+	Matrix d(4, 7);
+	d.randomize();
+	Matrix m(7, 7, true);
+	d.print();	
+	d.dot(&m);
+	d.print();
 }
