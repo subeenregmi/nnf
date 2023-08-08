@@ -4,14 +4,20 @@
 #include "generic.hpp"
 #include "matrix.hpp"
 
-namespace ActivationF{
+dataT sigmoid(dataT x);
+dataT sigmoidD(dataT x);
 
-	dataT sigmoid(dataT x);
-	dataT sigmoidD(dataT x);
+dataT relu(dataT x);
+dataT reluD(dataT x);
 
-	// Matrix Functions
-	void NM_sigmoid(NMatrix::Matrix* M);
-	void NM_sigmoidD(NMatrix::Matrix* M);
-}
+dataT tanh(dataT x);
+dataT tanhD(dataT y);
+
+void applyactivation();
+// Matrix Functions
+void sigmoid(Matrix* m);
+void sigmoidD(Matrix* m);
+void relu(Matrix* m);
+void reluD(Matrix* m);
 
 #endif // ACTIVATIONS

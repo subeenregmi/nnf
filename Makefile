@@ -1,11 +1,11 @@
 NAME:=nnf.out
 COMPILER:=g++
-CURRENTMODEL:=xor
+CURRENTMODEL:=and
 CURRENTTEST:=tests
 
 INCLUDEDIR:=./include/
 SRCDIR:=./src/
-MODELDIR:=./models/
+MODELDIR:=./models/gates/
 TESTDIR:=./tests/
 BUILDDIR:=./build/
 OUTDIR:=./build/out/
@@ -39,7 +39,7 @@ $(CURRENTTEST) : $(SRCOBJECTS) $(TESTOBJECTS)
 	$(COMPILER) -o $(TESTDIR)$@ $(SRCOBJECTS) $(TESTOBJECTS)
 
 clean:
-	rm -rf $(DEPFILES) $(SRCOBJECTS) $(MODELOBJECTS) $(TESTOBJECTS)
+	rm -rf $(DEPFILES) $(SRCOBJECTS) $(MODELOBJECTS) $(TESTOBJECTS) models/*.o models/*.d
 
 run: 
 	$(OUTDIR)$(CURRENTMODEL)

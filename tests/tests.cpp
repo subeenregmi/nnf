@@ -128,12 +128,35 @@ void Tester(){
 		HandleTest("Checking if hammard product is implemented successfully");
 	}
 
+	if(true){
+		NMatrix::Matrix a(2, 2);
+		NMatrix::Matrix b(2, 2);
+		NMatrix::Matrix d(2, 2);
+
+		NMatrix::RANDOMIZE(&a);
+		NMatrix::RANDOMIZE(&b);
+
+		NMatrix::SUBTRACT(&d, &a, &b);
+		passed = true;
+		for(int i=0; i<2; i++){
+			for(int j=0; j<2; j++){
+				if(d[i][j] != a[i][j] - b[i][j]){
+					passed = false;
+				}
+			}
+		}
+		HandleTest("Checking if subtraction works");
+	}
+
 	std::cout << passed_tests << "/" << total_tests << " passed." << std::endl;
 	std::cout << "Failed tests" << std::endl;
 	std::cout << "-----------------------" << std::endl;
 	for(int i=0; i<(int)FailedTests.size(); i++){
 		std::cout << FailedTests[i] << std::endl;
 	}
+
+	NMatrix::Matrix des(6, 6);
+	NMatrix::PRINT(&des);
 }
 
 int main(){

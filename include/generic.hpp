@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <time.h>
 #include <math.h>
+#include <cstring>
 
 typedef float dataT;
 dataT randD();

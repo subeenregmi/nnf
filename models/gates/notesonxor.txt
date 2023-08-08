@@ -3,3 +3,7 @@ i think this was the case, as i didnt add a nonlinear function (sigmoid) onto th
 layer, thus its just a linear combination of the input layer, thus the network could be 
 simplified to just two input nodes and one sigmoidal output node, and that cant work for 
 xor, i need to change this and try to figure out why the loss is going down.
+
+
+00:35 07-Aug-23 Possibly hitting a gradient vanishing problem, going to try to put relu
+in the hidden layer instead of sigma function. 

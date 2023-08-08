@@ -11,7 +11,6 @@ class DoubleSubscript{
 	public:
 		DoubleSubscript(dataT* m, int r, int MAX_COLS);
 		dataT& operator[](int col);
-		
 };
 
 #endif // DOUBLE_SUBSCRIPT
