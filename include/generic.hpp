@@ -8,7 +8,7 @@
 #include <math.h>
 #include <cstring>
 
-typedef float dataT;
+typedef double dataT;
 dataT randD();
 
 #endif

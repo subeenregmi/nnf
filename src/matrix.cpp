@@ -1,4 +1,5 @@
 #include "matrix.hpp"
+#include "activations.hpp"
 
 Matrix::Matrix(int r, int c, bool identity=false){
 	assert(r != 0);
@@ -168,10 +169,10 @@ void Matrix::makeIdentity(){
 }
 
 int main(){
-	Matrix d(4, 7);
+	Matrix d(3, 3);
 	d.randomize();
-	Matrix m(7, 7, true);
-	d.print();	
-	d.dot(&m);
+	d.scale(5.0);
+	activate(&d, softmax);
 	d.print();
+	std::cout << d.total();
 }

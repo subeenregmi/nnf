@@ -1,6 +1,8 @@
-#include "../include/activations.hpp"
+#include "activations.hpp"
 
-// Sigmoid Function
+dataT LEAKY_RELU_SLOPE = 0.1;
+dataT ELU_SLOPE = 1.0;
+
 dataT sigmoid(dataT x){
 	return 1 / (1 + exp(-x));
 }
@@ -9,49 +11,6 @@ dataT sigmoidD(dataT x){
 	return sigmoid(x) * (1-sigmoid(x));
 }
 
-
-
-void sigmoid(Matrix* m){
-	for(int i=0; i<m->rows; i++){
-		for(int j=0; j<m->cols; j++){
-			(*m)[i][j] = sigmoid((*m)[i][j]);
-		}
-	}
-}
-
-void sigmoidD(Matrix* m){
-	for(int i=0; i<m->rows; i++){
-		for(int j=0; j<m->cols; j++){
-			(*m)[i][j] = sigmoidD((*m)[i][j]);
-		}
-	}
-}
-
-// Tanh Function 
-dataT tanh(data x){
-	return (exp(x) - exp(-x)) / (exp(x) + exp(-x));
-}
-
-dataT tanhD(data x){
-	return 1 - pow(tanh(x), 2);
-}
-
-
-void tanh(Matrix* m){
-	for(int i=0; i<m->rows; i++){
-		for(int j=0; j<m->cols; j++){
-			(*m)[i][j] = sigmoidD((*m)[i][j]);
-		}
-	}
-}
-
-void sigmoidD(Matrix* m){
-	for(int i=0; i<m->rows; i++){
-		for(int j=0; j<m->cols; j++){
-			(*m)[i][j] = sigmoidD((*m)[i][j]);
-		}
-	}
-}
 
 dataT relu(dataT x){
 	if(x<0){
@@ -67,19 +26,64 @@ dataT reluD(dataT x){
 	return 1;
 }
 
-
-void relu(Matrix* m){
-	for(int i=0; i<m->rows; i++){
-		for(int j=0; j<m->cols; j++){
-			(*m)[i][j] = relu((*m)[i][j]);
-		}
-	}
+dataT Ntanh(dataT x){
+	return (exp(x) - exp(-x)) / (exp(x) + exp(-x));
 }
 
-void reluD(Matrix* m){
+dataT NtanhD(dataT x){
+	return 1 - pow(tanh(x), 2);
+}
+
+dataT leakyrelu(dataT x){
+	return std::max(LEAKY_RELU_SLOPE*x, x);
+}
+
+dataT leakyreluD(dataT x){
+	if(x>0){
+		return x;
+	}
+	return LEAKY_RELU_SLOPE;
+}
+
+dataT elu(dataT x){
+	if(x >= 0){
+		return x;
+	}
+	return (exp(x) - 1) * ELU_SLOPE;
+}
+
+dataT eluD(dataT x){
+	if(x >= 0){
+		return 1;
+	}
+	return elu(x) * ELU_SLOPE;
+}
+
+dataT softmax(dataT x){
+	return exp(x);	
+}
+
+dataT softmaxD(dataT x){
+	return 
+}
+
+void activate(Matrix* m, dataT (*activation)(dataT)){
+	assert(activation != nullptr);
+	dataT eTotal = 0;
+
 	for(int i=0; i<m->rows; i++){
 		for(int j=0; j<m->cols; j++){
-			(*m)[i][j] = reluD((*m)[i][j]);
+			(*m)[i][j] = activation((*m)[i][j]);
+			if(activation == softmax){
+				eTotal += (*m)[i][j];
+			}
+		}
+	}
+	if(activation == softmax){
+		for(int i=0; i<m->rows; i++){
+			for(int j=0; j<m->cols; j++){
+				(*m)[i][j] = (*m)[i][j] / eTotal;
+			}
 		}
 	}
 }

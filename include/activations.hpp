@@ -10,14 +10,18 @@ dataT sigmoidD(dataT x);
 dataT relu(dataT x);
 dataT reluD(dataT x);
 
-dataT tanh(dataT x);
-dataT tanhD(dataT y);
+dataT Ntanh(dataT x);
+dataT NtanhD(dataT y);
 
-void applyactivation();
-// Matrix Functions
-void sigmoid(Matrix* m);
-void sigmoidD(Matrix* m);
-void relu(Matrix* m);
-void reluD(Matrix* m);
+dataT leakyrelu(dataT x);
+dataT leakyreluD(dataT x);
+
+dataT elu(dataT x);
+dataT eluD(dataT x);
+
+dataT softmax(dataT x);
+dataT softmaxD(dataT x);
+
+void activate(Matrix* m, dataT(*activation)(dataT));
 
 #endif // ACTIVATIONS
