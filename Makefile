@@ -1,11 +1,11 @@
 NAME:=nnf.out
 COMPILER:=g++
-CURRENTMODEL:=and
+CURRENTMODEL:=lineregression
 CURRENTTEST:=tests
 
 INCLUDEDIR:=./include/
 SRCDIR:=./src/
-MODELDIR:=./models/gates/
+MODELDIR:=./models/
 TESTDIR:=./tests/
 BUILDDIR:=./build/
 OUTDIR:=./build/out/

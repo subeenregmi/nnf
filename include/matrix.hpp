@@ -9,13 +9,13 @@ class Matrix{
 		int rows; 
 		int cols;
 		dataT* start;
-		Matrix(int r, int c, bool identity);
+		Matrix(int r, int c, bool identity = false);
 		DoubleSubscript operator[](int r);
 		~Matrix();
 
 		void copy(Matrix* m);
 		void randomize();
-		void print(std::string label);
+		void print(std::string label = "");
 
 		void dot(Matrix* m);
 		void add(Matrix* m);

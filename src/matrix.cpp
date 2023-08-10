@@ -168,16 +168,3 @@ void Matrix::makeIdentity(){
 		}
 	}
 }
-
-int main(){
-	Matrix x(3, 1);
-	Matrix y(3, 1);
-	y[0][0] = 1;
-	y[1][0] = 1;
-	y[2][0] = 1;
-	x.randomize();
-	x.print();
-	y.print();
-	squaredloss(&x, &y);
-	x.print();
-}
