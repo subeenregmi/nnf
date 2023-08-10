@@ -169,10 +169,14 @@ void Matrix::makeIdentity(){
 }
 
 int main(){
-	Matrix d(3, 3);
-	d.randomize();
-	d.scale(5.0);
-	activate(&d, softmax);
-	d.print();
-	std::cout << d.total();
+	for(int i=0; i<1000; i++){
+		int r = (int)rand() % 500;
+		if(r == 0){
+			continue;
+		}
+		Matrix d(r, 1);
+		d.randomize();
+		activate(&d, softmax);
+		activate(&d, softmaxD);
+	}
 }

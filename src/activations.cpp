@@ -64,7 +64,15 @@ dataT softmax(dataT x){
 }
 
 dataT softmaxD(dataT x){
-	return 
+	return x;
+}
+
+dataT swish(dataT x){
+	return x * sigmoid(x);
+}
+
+dataT swishD(dataT x){
+	return sigmoid(x) + sigmoidD(x)*x;
 }
 
 void activate(Matrix* m, dataT (*activation)(dataT)){
@@ -85,5 +93,27 @@ void activate(Matrix* m, dataT (*activation)(dataT)){
 				(*m)[i][j] = (*m)[i][j] / eTotal;
 			}
 		}
+	}
+	if(activation == softmaxD){
+		int r = (*m).rows;
+		Matrix d(r, r, false);
+		
+		for(int i=0; i<d.rows; i++){
+			for(int j=0; j<d.cols; j++){
+				dataT x;
+				if(i==j){
+					x = (*m)[i][0] * (1 - (*m)[i][0]);	
+				}
+				else{
+					x = -(*m)[i][0] * (*m)[j][0];		
+				}
+				d[i][j] = x;
+			}
+		}
+
+		m->cols = d.cols;
+		free(m->start);
+		m->start = (dataT*)calloc(m->rows*m->cols, sizeof(dataT));
+		m->copy(&d);
 	}
 }

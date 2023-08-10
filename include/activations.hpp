@@ -22,6 +22,9 @@ dataT eluD(dataT x);
 dataT softmax(dataT x);
 dataT softmaxD(dataT x);
 
+dataT swish(dataT x);
+dataT swishD(dataT x);
+
 void activate(Matrix* m, dataT(*activation)(dataT));
 
 #endif // ACTIVATIONS

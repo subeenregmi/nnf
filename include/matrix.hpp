@@ -8,6 +8,7 @@ class Matrix{
 	public:
 		int rows; 
 		int cols;
+		dataT* start;
 		Matrix(int r, int c, bool identity);
 		DoubleSubscript operator[](int r);
 		~Matrix();
@@ -25,7 +26,6 @@ class Matrix{
 		dataT total();
 
 	private: 
-		dataT* start;
 		void makeIdentity();
 };
 
