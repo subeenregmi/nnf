@@ -1,39 +1,19 @@
-#include "../include/loss.hpp"
+#include "loss.hpp"
 
-namespace LossF{
-	dataT squared_error(dataT x, dataT y){
-		return pow(y-x, 2);
-	}
-
-	dataT squared_error_D(dataT x, dataT y){
-		return 2*(y-x);
-	}
-	
-	void NM_squared_error(NMatrix::Matrix* D, NMatrix::Matrix* x, NMatrix::Matrix* y){
-		assert((D->rows == x->rows) == y->rows);
-		assert((D->cols == x->cols) == y->cols);
-		assert(D->start != nullptr);
-		assert(x->start != nullptr);
-		assert(y->start != nullptr);
-		
-		for(int i=0; i<D->rows; i++){
-			for(int j=0; j<D->cols; j++){
-				D->start[i*D->cols + j] = squared_error(x->start[i*x->cols + j], y->start[i*y->cols + j]);
-			}
-		}
-	}
-
-	void NM_squared_error_D(NMatrix::Matrix* D, NMatrix::Matrix* x, NMatrix::Matrix* y){
-		assert((D->rows == x->rows) == y->rows);
-		assert((D->cols == x->cols) == y->cols);
-		assert(D->start != nullptr);
-		assert(x->start != nullptr);
-		assert(y->start != nullptr);
-		
-		for(int i=0; i<D->rows; i++){
-			for(int j=0; j<D->cols; j++){
-				D->start[i*D->cols + j] = squared_error_D(x->start[i*x->cols + j], y->start[i*y->cols + j]);
-			}
+void squaredloss(Matrix* x, Matrix* y){
+	assert(x->rows == y->rows);
+	assert(x->cols == y->cols);
+	x->subtract(y);
+	for(int i=0; i<x->rows; i++){
+		for(int j=0; j<x->cols; j++){
+			(*x)[i][j] *= (*x)[i][j];
 		}
 	}
 }
+
+void squaredlossD(Matrix* x, Matrix* y){
+	assert(x->rows == y->rows);
+	assert(x->cols == y->cols);
+	x->subtract(y);
+}
+

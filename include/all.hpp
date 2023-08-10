@@ -6,5 +6,4 @@
 #include "loss.hpp"
 #include "matrix.hpp"
 
-
 #endif // ALL

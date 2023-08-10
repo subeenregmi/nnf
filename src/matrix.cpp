@@ -1,5 +1,6 @@
 #include "matrix.hpp"
 #include "activations.hpp"
+#include "loss.hpp"
 
 Matrix::Matrix(int r, int c, bool identity=false){
 	assert(r != 0);
@@ -169,14 +170,14 @@ void Matrix::makeIdentity(){
 }
 
 int main(){
-	for(int i=0; i<1000; i++){
-		int r = (int)rand() % 500;
-		if(r == 0){
-			continue;
-		}
-		Matrix d(r, 1);
-		d.randomize();
-		activate(&d, softmax);
-		activate(&d, softmaxD);
-	}
+	Matrix x(3, 1);
+	Matrix y(3, 1);
+	y[0][0] = 1;
+	y[1][0] = 1;
+	y[2][0] = 1;
+	x.randomize();
+	x.print();
+	y.print();
+	squaredloss(&x, &y);
+	x.print();
 }
