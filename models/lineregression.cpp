@@ -3,8 +3,6 @@
 #include "loss.hpp"
 #include "generic.hpp"
 
-
-
 void forward(Matrix* z, Matrix* w, Matrix* x, Matrix* b){
 	
 	Matrix c(w->rows, w->cols);

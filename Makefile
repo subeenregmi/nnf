@@ -1,6 +1,6 @@
 NAME:=nnf.out
 COMPILER:=g++
-CURRENTMODEL:=gates
+CURRENTMODEL:=xor
 CURRENTTEST:=tests
 
 INCLUDEDIR:=./include/
@@ -22,7 +22,7 @@ DEPFILES:= $(patsubst %.cpp, %.d, $(SRCFILES) $(MODELFILES) $(TESTFILES))
 
 OPT:=-O0
 DEPFLAGS:=-MP -MD 
-COMPILERFLAGS:= -Wall -Wextra $(OPT) $(DEPFLAGS)-I$(INCLUDEDIR)
+COMPILERFLAGS:= $(OPT) $(DEPFLAGS)-I$(INCLUDEDIR)
 
 all:
 	echo "model - to build the current model, test - to build the current tests" 
@@ -46,3 +46,6 @@ run:
 
 runtests:
 	@$(TESTDIR)$(CURRENTTEST)
+
+v: 
+	vim $(MODELFILES)

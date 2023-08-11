@@ -2,7 +2,7 @@
 #include "activations.hpp"
 #include "loss.hpp"
 
-Matrix::Matrix(int r, int c, bool identity=false){
+Matrix::Matrix(int r, int c, bool identity){
 	assert(r != 0);
 	assert(c != 0);
 
@@ -46,7 +46,7 @@ void Matrix::randomize(){
 	}
 }
 
-void Matrix::print(std::string label=""){
+void Matrix::print(std::string label){
 	if(label != ""){
 		std::cout << label <<  " = [" << std::endl << std::endl;
 	}
@@ -119,9 +119,9 @@ void Matrix::scale(dataT sf){
 
 void Matrix::transpose(){
 	Matrix d(cols, rows);
-	
-	for(int i=0; i<cols; i++){
-		for(int j=0; j<rows; j++){
+
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<cols; j++){
 			d[j][i] = (*this)[i][j];
 		}
 	}
