@@ -1,6 +1,6 @@
 NAME:=nnf.out
 COMPILER:=g++
-CURRENTMODEL:=lineregression
+CURRENTMODEL:=gates
 CURRENTTEST:=tests
 
 INCLUDEDIR:=./include/
