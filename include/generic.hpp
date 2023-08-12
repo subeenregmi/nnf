@@ -11,6 +11,5 @@
 
 typedef double dataT;
 dataT randD();
-dataT LRATE = 0.01f;
 
 #endif

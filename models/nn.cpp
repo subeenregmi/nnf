@@ -4,24 +4,44 @@
 
 int main(){
 
-	Matrix L(1, 3);
+	srand(time(0));
+	Matrix L(1, 6);
 	L[0][0] = 2;
-	L[0][1] = 2;
-	L[0][2] = 1;
-	NN n(&L);	
-	
-	for(int i=0; n.weights.size(); i++){ 
-		if(n.weights[i] == nullptr){
+	L[0][1] = 19;
+	L[0][2] = 20;
+	L[0][3] = 5;
+	L[0][4] = 7;
+	L[0][5] = 1;
+
+	Matrix x(2, 1);
+	x[0][0] = -99;
+	x[1][0] = -99;
+
+	NN neuralnet(&L);
+	neuralnet.randomize();
+
+	for(int i=0; i<neuralnet.Layers.size(); i++){
+		if(neuralnet.Layers[i] == nullptr){
 			break;
-		}
-		n.weights[i]->print();
+		}	
+		neuralnet.Layers[i]->w->print();		
+		neuralnet.Layers[i]->b->print();		
+		neuralnet.Layers[i]->z->print();		
+		neuralnet.Layers[i]->a->print();		
 	}
-	for(int i=0; n.biases.size(); i++){ 
-		if(n.biases[i] == nullptr){
+
+	neuralnet.forward(&x);
+
+	for(int i=0; i<neuralnet.Layers.size(); i++){
+		if(neuralnet.Layers[i] == nullptr){
 			break;
-		}
-		n.biases[i]->print();
+		}	
+		neuralnet.Layers[i]->w->print();		
+		neuralnet.Layers[i]->b->print();		
+		neuralnet.Layers[i]->z->print();		
+		neuralnet.Layers[i]->a->print();		
 	}
+
 
 	return 0;
 }

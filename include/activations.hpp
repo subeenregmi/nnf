@@ -4,6 +4,9 @@
 #include "generic.hpp"
 #include "matrix.hpp"
 
+dataT linear(dataT x);
+dataT linearD(dataT x);
+
 dataT sigmoid(dataT x);
 dataT sigmoidD(dataT x);
 

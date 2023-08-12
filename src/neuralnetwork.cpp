@@ -1,35 +1,46 @@
 #include "neuralnetwork.hpp"
 
+void NN::randomize(){
+	for(int i=0; i<Layers.size(); i++){
+		if(Layers[i] == nullptr){
+			break;
+		}
+		Layers[i]->w->randomize();
+		Layers[i]->b->randomize();
+	}
+}
+
+void NN::forward(Matrix* x){
+	for(int i=0; i<Layers.size(); i++){
+		if(Layers[i] == nullptr){
+			break;
+		}
+		Layers[i]->forward(x);
+		x = Layers[i]->a;
+	}	
+}
+
 NN::NN(Matrix* l){
 	assert(l->rows == 1);
+	LayerStructure = l;
 	
 	// check if any layer has zero or less neurons (illegal)
 	for(int i=0; i<l->cols; i++){
 		assert((*l)[0][i] > 0);
 	}
 
-	// Create weights 
 	for(int i=0; i<l->cols-1; i++){
-
-		int r = (*l)[0][i+1];
-		int c = (*l)[0][i];
-
-		Matrix* w = new Matrix(r, c);	
-		w->randomize();
-		weights.push_back(w);
+		Layer* L = new Layer((*l)[0][i], (*l)[0][i+1], linear);
+		Layers.push_back(L);
 	}
+}
 
-	for(int i=1; i<l->cols; i++){
-		Matrix* b = new Matrix((*l)[0][i], 1);
-		b->randomize();
-		biases.push_back(b);
-	}
-	
-	for(int i=0; i<l->cols-1; i++){
-		Matrix* z = new Matrix((*l)[0][i], 1);
-		Matrix* a = new Matrix((*l)[0][i], 1);
-		zterms.push_back(z);
-		activations.push_back(z);
+NN::~NN(){
+	for(int i=0; i<Layers.size(); i++){
+		if(Layers[i] == nullptr){
+			break;
+		}
+		free(Layers[i]);
 	}
 }
 

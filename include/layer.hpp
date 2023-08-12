@@ -17,6 +17,7 @@ class Layer{
 
 		void randomize();
 		void forward(Matrix* x);
+		void setactivation(dataT(*act)(dataT));
 
 		Layer(int n, int nnext, dataT(*act)(dataT));
 		~Layer();

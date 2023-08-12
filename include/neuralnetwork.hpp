@@ -4,26 +4,19 @@
 #include "matrix.hpp"
 #include "activations.hpp"
 #include "loss.hpp"
+#include "layer.hpp"
 #include "generic.hpp"
 
 class NN{
 	public:
-		Matrix* layers;
-		std::vector<Matrix*> weights;
-		std::vector<Matrix*> biases;
-		std::vector<Matrix*> zterms;
-		std::vector<Matrix*> activations;
+		std::vector<Layer*> Layers; 
+		Matrix* LayerStructure;
 
-
-		NN(Matrix* l);
-		void forward();
+		void randomize();
+		void forward(Matrix* x);
 		
-
-
-	private:
-
+		NN(Matrix* l);
+		~NN();
 };
-
-
 
 #endif // NNS

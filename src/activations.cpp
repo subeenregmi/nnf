@@ -3,6 +3,14 @@
 dataT LEAKY_RELU_SLOPE = 0.1;
 dataT ELU_SLOPE = 1.0;
 
+dataT linear(dataT x){
+	return x;
+}
+
+dataT linearD(dataT x){
+	return 1;
+}
+
 dataT sigmoid(dataT x){
 	return 1 / (1 + exp(-x));
 }
@@ -10,7 +18,6 @@ dataT sigmoid(dataT x){
 dataT sigmoidD(dataT x){
 	return sigmoid(x) * (1-sigmoid(x));
 }
-
 
 dataT relu(dataT x){
 	if(x<0){
