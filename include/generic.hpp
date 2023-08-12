@@ -7,6 +7,7 @@
 #include <time.h>
 #include <math.h>
 #include <cstring>
+#include <vector>
 
 typedef double dataT;
 dataT randD();
