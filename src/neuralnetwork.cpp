@@ -20,6 +20,26 @@ void NN::forward(Matrix* x){
 	}	
 }
 
+void NN::print(){
+	for(int i=0; i<Layers.size(); i++){
+		if(Layers[i] == nullptr){
+			break;
+		}
+		std::string index = std::to_string(i+1);
+		Layers[i]->w->print("w" + index);
+		Layers[i]->b->print("b" + index);
+		Layers[i]->z->print("z" + index);
+		Layers[i]->a->print("a" + index);
+	}
+}
+
+void NN::setactivation(int layer, dataT(*actf)(dataT)){
+	assert(layer >= 0);	
+	assert(layer < LayerStructure->cols);
+	assert(actf != nullptr);
+	Layers[layer]->setactivation(actf);
+}
+
 NN::NN(Matrix* l){
 	assert(l->rows == 1);
 	LayerStructure = l;

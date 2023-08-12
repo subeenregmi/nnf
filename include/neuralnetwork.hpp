@@ -14,6 +14,8 @@ class NN{
 
 		void randomize();
 		void forward(Matrix* x);
+		void print();
+		void setactivation(int layer, dataT(*actf)(dataT));
 		
 		NN(Matrix* l);
 		~NN();
