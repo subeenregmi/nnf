@@ -17,7 +17,17 @@ void Layer::forward(Matrix* x){
 }
 
 void Layer::setactivation(dataT(*act)(dataT)){
+	assert(act != nullptr);
 	actfunction = act;	
+}
+
+void Layer::copy(Layer* x){
+	neurons = x->neurons;
+	w->copy(x->w);
+	b->copy(x->b);
+	z->copy(x->z);
+	a->copy(x->a);
+	actfunction = x->actfunction;
 }
 
 Layer::Layer(int n, int nnext, dataT(*act)(dataT)){

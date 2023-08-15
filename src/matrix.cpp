@@ -63,6 +63,11 @@ void Matrix::print(std::string label){
 	std::cout << "]" << std::endl;
 }
 
+void Matrix::clear(){
+	free(start);
+	start = (dataT*)calloc(rows*cols, sizeof(dataT));
+}
+
 void Matrix::dot(Matrix* m){
 
 	assert(cols == m->rows);	

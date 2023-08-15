@@ -16,6 +16,7 @@ class Matrix{
 		void copy(Matrix* m);
 		void randomize();
 		void print(std::string label = "");
+		void clear();
 
 		void dot(Matrix* m);
 		void add(Matrix* m);
