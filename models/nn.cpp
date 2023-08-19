@@ -4,18 +4,14 @@
 
 int main(){
 
-	Matrix L(1, 2);
-	L[0][0] = 2;
-	L[0][1] = 1;
+	Matrix a(2, 1);
+	a[0][0] = 1; a[1][0] = 2;
+	a.print();
+	activate(&a, softmax);
+	a.print();	
+	activate(&a, softmaxD);
+	a.print();
 
-	NN neuralnet(&L);
-	neuralnet.randomize();
-	
-	neuralnet.print();
-
-	neuralnet.clear();
-
-	neuralnet.print();
 
 	return 0;
 }

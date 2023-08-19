@@ -32,7 +32,7 @@ int main(){
 	NAND[3][0] = 1; NAND[3][1] = 1; NAND[3][2] = 0;		
 
 	Matrix curr(4, 3);
-	curr.copy(&NAND);
+	curr.copy(&AND);
 
 	Matrix w(1, 2);
 	Matrix b(1, 1);

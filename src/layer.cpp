@@ -19,6 +19,31 @@ void Layer::forward(Matrix* x){
 void Layer::setactivation(dataT(*act)(dataT)){
 	assert(act != nullptr);
 	actfunction = act;	
+
+	if(actfunction == linear){
+		actfunctionD = linearD;
+	}
+	if(actfunction == sigmoid){
+		actfunctionD = sigmoidD;
+	}
+	if(actfunction == relu){
+		actfunctionD = reluD;
+	}
+	if(actfunction == Ntanh){
+		actfunctionD = NtanhD;
+	}
+	if(actfunction == leakyrelu){
+		actfunctionD = leakyreluD;
+	}
+	if(actfunction == elu){
+		actfunctionD = eluD;
+	}
+	if(actfunction == softmax){
+		actfunctionD = softmaxD;
+	}
+	if(actfunction == swish){
+		actfunctionD = swishD;
+	}
 }
 
 void Layer::copy(Layer* x){
@@ -32,7 +57,7 @@ void Layer::copy(Layer* x){
 
 Layer::Layer(int n, int nnext, dataT(*act)(dataT)){
 	neurons = n;
-	actfunction = act;
+	setactivation(act);
 
 	Matrix* weight = new Matrix(nnext, n);
 	Matrix* bias = new Matrix(nnext, 1);

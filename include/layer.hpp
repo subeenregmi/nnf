@@ -14,6 +14,7 @@ class Layer{
 		Matrix* z;
 		Matrix* a;
 		dataT(*actfunction)(dataT);
+		dataT(*actfunctionD)(dataT);
 
 		void randomize();
 		void forward(Matrix* x);

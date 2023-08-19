@@ -11,7 +11,6 @@ void forward(Matrix* z, Matrix* w, Matrix*x, Matrix*b){
 	z->add(b);
 }
 
-
 int main(){
 
 	srand(time(0));
@@ -48,7 +47,6 @@ int main(){
 		Matrix z1(2, 1);
 		Matrix z2(1, 1);
 		Matrix a2(1, 1);
-
 
 		for(int h=0; h<4; h++){
 
@@ -137,10 +135,8 @@ int main(){
 		a2.copy(&z2);
 		activate(&a2, sigmoid);
 		
-
 		std::cout << x[0][0] << ", " << x[1][0] << " = " << y[0][0] << " | " << a2[0][0] << std::endl;
 	}
-
 
 	return 0;
 }
