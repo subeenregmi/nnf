@@ -14,7 +14,7 @@ dataT relu(dataT x);
 dataT reluD(dataT x);
 
 dataT Ntanh(dataT x);
-dataT NtanhD(dataT y);
+dataT NtanhD(dataT x);
 
 dataT leakyrelu(dataT x);
 dataT leakyreluD(dataT x);

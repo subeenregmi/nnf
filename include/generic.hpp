@@ -8,6 +8,7 @@
 #include <math.h>
 #include <cstring>
 #include <vector>
+#include <set>
 
 typedef double dataT;
 dataT randD();

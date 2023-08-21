@@ -38,6 +38,28 @@ void Matrix::copy(Matrix* m){
 	}
 }
 
+void Matrix::copyrow(Matrix* m, int rowfrom, int rowto){
+	assert(cols == m->cols);
+	assert((rowfrom > 0) && (rowto > 0));
+	assert(m->rows >= rowfrom);
+	assert(rows >= rowto);
+
+	for(int i=0; i<m->cols; i++){
+		(*this)[rowto-1][i] = (*m)[rowfrom-1][i]; 
+	}
+}
+
+void Matrix::copycol(Matrix* m, int colfrom, int colto){
+	assert(rows == m->rows);
+	assert((colfrom > 0) && (colto > 0));
+	assert(m->cols >= colfrom);
+	assert(cols >= colto);
+
+	for(int i=0; i<m->rows; i++){
+		(*this)[i][colto-1] = (*m)[i][colfrom-1]; 
+	}
+}
+
 void Matrix::randomize(){
 	for(int i=0; i<rows; i++){
 		for(int j=0; j<cols; j++){
