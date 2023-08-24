@@ -29,6 +29,9 @@ void Dataset::allocate(){
 	int i = 1;
 	for(int r : training){
 		TrainingData->copyrow(Data, r, i);
+		if(test.size() == 0){
+			TestData->copyrow(Data, r, i);
+		}
 		i++;
 	}
 	i=1; 
@@ -38,11 +41,46 @@ void Dataset::allocate(){
 	}
 }
 
-Dataset::Dataset(Matrix* data, dataT percent){	
-	int trainingrows = data->rows * percent;
-	assert(trainingrows > 0);
+void Dataset::getTrainingExample(int r, Matrix* x, Matrix* y){
+	assert(x->rows == Inputs);
+	assert(y->rows == Outputs);
+	assert((x->cols == 1) && (y->cols == 1));
+	assert((r >= 0) && (r < TrainingData->rows));
+	
+	//copying values into x
+	for(int i=0; i<Inputs; i++){
+		(*x)[i][0] = (*TrainingData)[r][i];
+	}
+	// copying values into y
+	for(int i=0; i<Outputs; i++){
+		(*y)[i][0] = (*TrainingData)[r][Inputs + i];
+	}
+}
+
+void Dataset::getTestExample(int r, Matrix* x, Matrix* y){
+	assert(x->rows == Inputs);
+	assert(y->rows == Outputs);
+	assert((x->cols == 1) && (y->cols == 1));
+	assert((r >= 0) && (r < TrainingData->rows));
+	
+	//copying values into x
+	for(int i=0; i<Inputs; i++){
+		(*x)[i][0] = (*TestData)[r][i];
+	}
+	// copying values into y
+	for(int i=0; i<Outputs; i++){
+		(*y)[i][0] = (*TestData)[r][Inputs + i];
+	}
+}
+
+Dataset::Dataset(Matrix* data, dataT percent, int input){	
+	assert((data->rows * percent) > 0);
+	assert(input < data->cols);
+
 	Percentage = percent;
 	Data = data;
+	Inputs = input;
+	Outputs = data->cols - input;
 	allocate();
 }
 

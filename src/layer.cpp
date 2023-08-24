@@ -55,6 +55,22 @@ void Layer::copy(Layer* x){
 	actfunction = x->actfunction;
 }
 
+void Layer::clear(){
+	w->clear();
+	b->clear();
+	z->clear();
+	a->clear();
+	actfunction = nullptr;
+	actfunctionD = nullptr;
+}
+
+void Layer::print(std::string label){
+	w->print("Weight " + label);
+	b->print("Bias " + label);
+	z->print("Unactivated Sum " + label);
+	a->print("Activated Sum " + label);
+}
+
 Layer::Layer(int n, int nnext, dataT(*act)(dataT)){
 	neurons = n;
 	setactivation(act);

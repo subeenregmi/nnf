@@ -20,6 +20,8 @@ class Layer{
 		void forward(Matrix* x);
 		void setactivation(dataT(*act)(dataT));
 		void copy(Layer* x);
+		void clear();
+		void print(std::string label="");
 
 		Layer(int n, int nnext, dataT(*act)(dataT));
 		~Layer();

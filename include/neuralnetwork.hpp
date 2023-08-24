@@ -3,26 +3,29 @@
 
 #include "matrix.hpp"
 #include "activations.hpp"
-#include "loss.hpp"
 #include "layer.hpp"
 #include "generic.hpp"
+#include "dataset.hpp"
+#include "loss.hpp"
 
 class NN{
 	public:
 		std::vector<Layer*> Layers; 
 		Matrix* LayerStructure;
-		Matrix* TrainingSet; 
+		Dataset* Data; 
+		dataT(*LossFunction)(dataT, dataT);
+		dataT(*LossFunctionD)(dataT, dataT);
+		dataT LearningRate;
 
 		void randomize();
 		void forward(Matrix* x);
 		void print();
-		void setactivation(int layer, dataT(*actf)(dataT));
-		void setTrainingSet(Matrix* TS);
 		void clear();
-		void setLoss();
-		//void train(int epochs, int batchsize);
+		void setloss(dataT(*lossf)(dataT, dataT));
+		void train(int epochs=100, int batchsize=10);
+		void test();
 		
-		NN(Matrix* l);
+		NN(Matrix* l, Dataset* D, dataT lrate);
 		~NN();
 };
 

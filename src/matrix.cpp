@@ -131,7 +131,7 @@ void Matrix::subtract(Matrix* m){
 
 	for(int i=0; i<rows; i++){
 		for(int j=0; j<cols; j++){
-			(*this)[i][j] -= (*m)[i][j];
+			(*this)[i][j] =  (*this)[i][j] - (*m)[i][j];
 		}
 	}
 }

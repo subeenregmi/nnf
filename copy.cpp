@@ -31,7 +31,7 @@ int main(){
 	w2.randomize();
 	b2.randomize();
 
-	int iterations = 1000; 
+	int iterations = 5000; 
 	dataT lrate = 0.1f;
 	dataT totalcost;
 
@@ -61,14 +61,15 @@ int main(){
 			activate(&a2, sigmoid);
 
 			Matrix Loss(1, 1);
-			applyloss(&Loss, &a2, &y, mse);
+			Loss.copy(&a2);
+			squaredloss(&Loss, &y);
 			totalcost += Loss.total();
 
 			// error2
 			Matrix error2(1, 1);
 			Matrix temp1(1, 1);
-			error2.copy(&y);
-			error2.subtract(&a2);
+			error2.copy(&a2);
+			error2.subtract(&y);
 			temp1.copy(&z2);
 			activate(&temp1, sigmoidD);
 			error2.hproduct(&temp1);
@@ -108,10 +109,10 @@ int main(){
 		dcdb1.scale(lrate);
 		dcdw2.scale(lrate);
 		dcdb2.scale(lrate);
-		w1.add(&dcdw1);
-		b1.add(&dcdb1);
-		w2.add(&dcdw2);
-		b2.add(&dcdb2);
+		w1.subtract(&dcdw1);
+		b1.subtract(&dcdb1);
+		w2.subtract(&dcdw2);
+		b2.subtract(&dcdb2);
 	}
 
 	Matrix a1(2, 1);
@@ -134,5 +135,6 @@ int main(){
 		
 		std::cout << x[0][0] << ", " << x[1][0] << " = " << y[0][0] << " | " << a2[0][0] << std::endl;
 	}
+
 	return 0;
 }
