@@ -1,46 +1,5 @@
 #include "dataset.hpp"
 
-void Dataset::allocate(){
-
-	int testrows = Data->rows * (1 - Percentage); 
-	std::set<int> training;
-	std::set<int> test;
-
-	for(int i=1; i<=Data->rows; i++){
-		training.insert(i);
-	}
-
-	while(test.size() != testrows){
-		int r = rand() % Data->rows;
-		if(training.find(r) != training.end()){
-			test.insert(r);
-			training.erase(r);
-		}
-	}
-
-	TrainingData = new Matrix(training.size(), Data->cols);	
-	if(test.size() == 0){
-		TestData = new Matrix(training.size(), Data->cols);
-	}
-	else{
-		TestData = new Matrix(test.size(), Data->cols);
-	}
-
-	int i = 1;
-	for(int r : training){
-		TrainingData->copyrow(Data, r, i);
-		if(test.size() == 0){
-			TestData->copyrow(Data, r, i);
-		}
-		i++;
-	}
-	i=1; 
-	for(int r : test){
-		TestData->copyrow(Data, r, i);
-		i++;
-	}
-}
-
 void Dataset::getTrainingExample(int r, Matrix* x, Matrix* y){
 	assert(x->rows == Inputs);
 	assert(y->rows == Outputs);
@@ -78,10 +37,46 @@ Dataset::Dataset(Matrix* data, dataT percent, int input){
 	assert(input < data->cols);
 
 	Percentage = percent;
-	Data = data;
 	Inputs = input;
 	Outputs = data->cols - input;
-	allocate();
+
+	int testrows = data->rows * (1 - Percentage); 
+	std::set<int> training;
+	std::set<int> test;
+
+	for(int i=1; i<=data->rows; i++){
+		training.insert(i);
+	}
+
+	while(test.size() != testrows){
+		int r = rand() % data->rows;
+		if(training.find(r) != training.end()){
+			test.insert(r);
+			training.erase(r);
+		}
+	}
+
+	TrainingData = new Matrix(data->rows - testrows, data->cols);
+	if(testrows == 0){
+		TestData = new Matrix(data->rows, data->cols);
+	}
+	else{
+		TestData = new Matrix(testrows, data->cols);
+	}
+
+	int i = 1;
+	for(int r : training){
+		TrainingData->copyrow(data, r, i);
+		if(test.size() == 0){
+			TestData->copyrow(data, r, i);
+		}
+		i++;
+	}
+	i=1; 
+	for(int r : test){
+		TestData->copyrow(data, r, i);
+		i++;
+	}
 }
 
 Dataset::~Dataset(){

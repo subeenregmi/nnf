@@ -11,6 +11,7 @@ class Matrix{
 		dataT* start; 
 
 		Matrix(int r, int c, bool identity = false);
+		Matrix(std::string filename);
 		DoubleSubscript operator[](int r);
 		~Matrix();
 

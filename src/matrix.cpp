@@ -17,6 +17,50 @@ Matrix::Matrix(int r, int c, bool identity){
 	}
 }
 
+Matrix::Matrix(std::string filename){
+	std::ifstream file(filename);
+	assert(file != NULL);
+	rows = 0;
+	cols = 0;
+	std::string line;
+	std::string element = "";
+	std::vector<std::string> elements; 
+	while(getline(file, line)){
+		rows++;
+		cols=0;
+		for(char& c: line){
+			if(c == ','){
+				elements.push_back(element);
+				element = "";
+				cols++;
+			}
+			else if(c == ' '){
+				continue;
+			}
+			else{
+				element += c;
+			}
+		}	
+		elements.push_back(element);
+		element = "";
+		cols++;
+	}
+
+	start = (dataT*)calloc(rows*cols, sizeof(dataT));
+
+	int c=0;
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<cols; j++){
+			double val = std::stod(elements[c]);
+			(*this)[i][j] = val; // TODO  
+			c++;
+		}
+	}
+
+	file.close();
+
+}
+
 Matrix::~Matrix(){
 	free(start);
 }	

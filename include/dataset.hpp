@@ -7,7 +7,6 @@
 class Dataset{
 	public:
 		dataT Percentage;
-		Matrix* Data; 
 		Matrix* TrainingData;
 		Matrix* TestData;
 		int Inputs;

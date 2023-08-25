@@ -9,6 +9,7 @@
 #include <cstring>
 #include <vector>
 #include <set>
+#include <fstream>
 
 typedef double dataT;
 dataT randD();

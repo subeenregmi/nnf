@@ -151,6 +151,14 @@ void NN::train(int epochs, int batchsize){
 					LayerChanges[b]->clear();
 				}
 			}
+			for(int b=0; b<LayerChanges.size(); b++){
+				if(LayerChanges[b] == nullptr){
+					break;
+				}
+				Layers[b]->w->subtract(LayerChanges[b]->w);
+				Layers[b]->b->subtract(LayerChanges[b]->b);
+				LayerChanges[b]->clear();
+			}
 		}
 		
 		epoch_loss /= Data->TrainingData->rows;
@@ -180,7 +188,19 @@ void NN::test(){
 		Matrix l(Data->Outputs, 1);
 		applyloss(&l, &y_hat, &y, LossFunction);
 
-		printf("%f, %f = %f, | pred: %f\n", x[0][0], x[1][0], y[0][0], y_hat[0][0]);
+		std::cout << "Inputs: ";
+		for(int j=0; j<x.rows; j++){
+			std::cout << x[j][0] << " ";
+		}
+		std::cout << "| Output: ";
+		for(int j=0; j<y.rows; j++){
+			std::cout << y[j][0] << " ";
+		}
+		std::cout << "| Predicted: ";
+		for(int j=0; j<y_hat.rows; j++){
+			std::cout << y_hat[j][0] << " ";
+		}
+		std::cout << std::endl;
 	}
 
 }
