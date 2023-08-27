@@ -20,14 +20,14 @@ dataT sigmoidD(dataT x){
 }
 
 dataT relu(dataT x){
-	if(x<0){
+	if(x<=0){
 		return 0;
 	}
 	return x;
 }
 
 dataT reluD(dataT x){
-	if(x<0){
+	if(x<=0){
 		return 0;
 	}
 	return 1;

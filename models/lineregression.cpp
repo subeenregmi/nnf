@@ -45,14 +45,12 @@ int main(){
 			forward(&z, &w, &x, &b);	
 	
 			Matrix Loss(1, 1);
-			Loss.copy(&z);
-			squaredloss(&Loss, &y);
+			applyloss(&Loss, &z, &y, mse);
 			// std::cout << "Loss for current example: " << Loss[0][0] << std::endl;
 			totalcost += Loss[0][0];
 
 			Matrix error(1, 1);
-			error.copy(&z);
-			squaredlossD(&error, &y);
+			applyloss(&error, &z, &y, mseD);
 			
 			// bias change 
 			dcdb.add(&error);

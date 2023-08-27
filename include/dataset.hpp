@@ -12,7 +12,6 @@ class Dataset{
 		int Inputs;
 		int Outputs;
 
-		void allocate();
 		void getTrainingExample(int r, Matrix* x, Matrix* y);
 		void getTestExample(int r, Matrix* x, Matrix* y);
 

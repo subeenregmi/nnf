@@ -44,6 +44,10 @@ void NN::setloss(dataT(*lossf)(dataT, dataT)){
 		LossFunction = mse;
 		LossFunctionD = mseD;
 	}
+	else if(lossf == cel){
+		LossFunction = cel;
+		LossFunctionD = celD;
+	}
 	else{
 		std::cout << "unknown loss function" << std::endl;
 	}
@@ -85,16 +89,23 @@ void NN::train(int epochs, int batchsize){
 
 			for(int lb=totallayers; lb>=0; lb--){
 				
+				// lb = 0 
 				Layer* CurrentLayer = Layers[lb];
 				Layer* PreviousLayer = Layers[lb+1];
 
 				if(lb == totallayers){
 					// Calculate initial error
-					applyloss(&error, &y_hat, &y, LossFunctionD);
-					Matrix temp(Data->Outputs, 1);
-					temp.copy(CurrentLayer->z);
-					activate(&temp, CurrentLayer->actfunctionD);
-					error.hproduct(&temp);
+					if(LossFunction == cel && CurrentLayer->actfunction == softmax){
+						error.copy(&y_hat);
+						error.subtract(&y);
+					}
+					else{
+						applyloss(&error, &y_hat, &y, LossFunctionD);
+						Matrix temp(Data->Outputs, 1);
+						temp.copy(CurrentLayer->z);
+						activate(&temp, CurrentLayer->actfunctionD);
+						error.hproduct(&temp);
+					}
 				}
 				else{
 					// calculate subsequent errors
@@ -135,13 +146,14 @@ void NN::train(int epochs, int batchsize){
 				}
 				
 				// bias changes error=dcdb
-				Matrix tempb(error.rows, error.cols);
-				tempb.copy(&error);
-				tempb.scale(LearningRate);
-				LayerChanges[lb]->b->add(&tempb);
+				Matrix t(error.rows, error.cols);
+				t.copy(&error);
+				t.scale(LearningRate);
+				LayerChanges[lb]->b->add(&t);
+
 			}
 			
-			if(i % batchsize == 0){
+			if((i % batchsize == 0 && i != 0) || Data->TrainingData->rows == 1){
 				for(int b=0; b<LayerChanges.size(); b++){
 					if(LayerChanges[b] == nullptr){
 						break;
@@ -151,16 +163,16 @@ void NN::train(int epochs, int batchsize){
 					LayerChanges[b]->clear();
 				}
 			}
-			for(int b=0; b<LayerChanges.size(); b++){
-				if(LayerChanges[b] == nullptr){
-					break;
-				}
-				Layers[b]->w->subtract(LayerChanges[b]->w);
-				Layers[b]->b->subtract(LayerChanges[b]->b);
-				LayerChanges[b]->clear();
-			}
 		}
 		
+		for(int b=0; b<LayerChanges.size(); b++){
+			if(LayerChanges[b] == nullptr){
+				break;
+			}
+			Layers[b]->w->subtract(LayerChanges[b]->w);
+			Layers[b]->b->subtract(LayerChanges[b]->b);
+			LayerChanges[b]->clear();
+		}
 		epoch_loss /= Data->TrainingData->rows;
 		std::cout << "Training epoch " << ep+1 << "| Cost = " << epoch_loss << std::endl;
 	}
@@ -175,6 +187,7 @@ void NN::train(int epochs, int batchsize){
 }
 
 void NN::test(){
+	dataT testL=0;
 	for(int i=0; i<Data->TestData->rows; i++){
 		Matrix x(Data->Inputs, 1);
 		Matrix y(Data->Outputs, 1);
@@ -188,20 +201,10 @@ void NN::test(){
 		Matrix l(Data->Outputs, 1);
 		applyloss(&l, &y_hat, &y, LossFunction);
 
-		std::cout << "Inputs: ";
-		for(int j=0; j<x.rows; j++){
-			std::cout << x[j][0] << " ";
-		}
-		std::cout << "| Output: ";
-		for(int j=0; j<y.rows; j++){
-			std::cout << y[j][0] << " ";
-		}
-		std::cout << "| Predicted: ";
-		for(int j=0; j<y_hat.rows; j++){
-			std::cout << y_hat[j][0] << " ";
-		}
-		std::cout << std::endl;
+		//std::cout << "y: " << y[0][0] << ", y^: "<< y_hat[0][0] << std::endl;
+		testL+=l.total();
 	}
+	std::cout << "Total Test Loss: " << testL/Data->TestData->rows;
 
 }
 
