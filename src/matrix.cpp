@@ -52,7 +52,7 @@ Matrix::Matrix(std::string filename){
 	for(int i=0; i<rows; i++){
 		for(int j=0; j<cols; j++){
 			double val = std::stod(elements[c]);
-			(*this)[i][j] = val; // TODO  
+			start[i*cols + j] = val; // TODO  
 			c++;
 		}
 	}
@@ -77,7 +77,7 @@ void Matrix::copy(Matrix* m){
 	assert(cols == m->cols);
 	for(int i=0; i<m->rows; i++){
 		for(int j=0; j<m->cols; j++){
-			(*this)[i][j] = (*m)[i][j];
+			start[i*cols + j] = m->start[i*cols + j];
 		}
 	}
 }
@@ -88,8 +88,8 @@ void Matrix::copyrow(Matrix* m, int rowfrom, int rowto){
 	assert(m->rows >= rowfrom);
 	assert(rows >= rowto);
 
-	for(int i=0; i<m->cols; i++){
-		(*this)[rowto-1][i] = (*m)[rowfrom-1][i]; 
+	for(int i=0; i<cols; i++){
+		start[(rowto-1)*cols +  i] = m->start[(rowfrom-1)*cols + i]; 
 	}
 }
 
@@ -99,15 +99,15 @@ void Matrix::copycol(Matrix* m, int colfrom, int colto){
 	assert(m->cols >= colfrom);
 	assert(cols >= colto);
 
-	for(int i=0; i<m->rows; i++){
-		(*this)[i][colto-1] = (*m)[i][colfrom-1]; 
+	for(int i=0; i<rows; i++){
+		start[(i * cols) + colto-1] = m->start[(i*m->cols) + colfrom-1]; 
 	}
 }
 
 void Matrix::randomize(){
 	for(int i=0; i<rows; i++){
 		for(int j=0; j<cols; j++){
-			(*this)[i][j] = randD();
+			start[i*cols + j] = randD();
 		}
 	}
 }
@@ -142,7 +142,7 @@ void Matrix::dot(Matrix* m){
 	for(int i=0; i<rows; i++){
 		for(int j=0; j<m->cols; j++){
 			for(int k=0; k<cols; k++){
-				d[i][j] += (*this)[i][k] * (*m)[k][j];
+				d.start[i*m->cols + j] += start[i*cols + k] * m->start[k*m->cols+ j];
 			}
 		}
 	}
@@ -151,11 +151,7 @@ void Matrix::dot(Matrix* m){
 	cols = m->cols;
 	start = (dataT*)calloc(rows*cols, sizeof(dataT));
 
-	for(int i=0; i<rows; i++){
-		for(int j=0; j<cols; j++){
-			(*this)[i][j] = d[i][j];
-		}
-	}
+	this->copy(&d);
 }
 
 void Matrix::add(Matrix* m){
@@ -164,7 +160,7 @@ void Matrix::add(Matrix* m){
 
 	for(int i=0; i<rows; i++){
 		for(int j=0; j<cols; j++){
-			(*this)[i][j] += (*m)[i][j];
+			start[i*cols + j] += m->start[i*cols + j];
 		}
 	}
 }
@@ -175,7 +171,7 @@ void Matrix::subtract(Matrix* m){
 
 	for(int i=0; i<rows; i++){
 		for(int j=0; j<cols; j++){
-			(*this)[i][j] =  (*this)[i][j] - (*m)[i][j];
+			start[i*cols + j] -=  m->start[i*cols + j];
 		}
 	}
 }
@@ -183,7 +179,7 @@ void Matrix::subtract(Matrix* m){
 void Matrix::scale(dataT sf){
 	for(int i=0; i<rows; i++){
 		for(int j=0; j<cols; j++){
-			(*this)[i][j] *= sf;
+			start[i*cols + j] *= sf;
 		}
 	}
 }
@@ -193,7 +189,7 @@ void Matrix::transpose(){
 
 	for(int i=0; i<rows; i++){
 		for(int j=0; j<cols; j++){
-			d[j][i] = (*this)[i][j];
+			d.start[j*rows + i] = start[i*cols + j];
 		}
 	}
 
@@ -202,11 +198,7 @@ void Matrix::transpose(){
 	cols = d.cols;
 	start = (dataT*)calloc(rows*cols, sizeof(dataT));
 
-	for(int i=0; i<rows; i++){
-		for(int j=0; j<cols; j++){
-			(*this)[i][j] = d[i][j];
-		}
-	}	
+	this->copy(&d);
 }
 
 void Matrix::hproduct(Matrix* m){
@@ -215,7 +207,7 @@ void Matrix::hproduct(Matrix* m){
 
 	for(int i=0; i<rows; i++){
 		for(int j=0; j<cols; j++){
-			(*this)[i][j] *= (*m)[i][j];
+			start[i*cols + j] *= m->start[i*cols + j];
 		}
 	}
 }

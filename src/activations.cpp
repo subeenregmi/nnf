@@ -85,19 +85,20 @@ dataT swishD(dataT x){
 void activate(Matrix* m, dataT (*activation)(dataT)){
 	assert(activation != nullptr);
 	dataT eTotal = 0;
+	int c = m->cols;
 
 	for(int i=0; i<m->rows; i++){
-		for(int j=0; j<m->cols; j++){
-			(*m)[i][j] = activation((*m)[i][j]);
+		for(int j=0; j<c; j++){
+			m->start[i*c + j] = activation(m->start[i*c + j]);
 			if(activation == softmax){
-				eTotal += (*m)[i][j];
+				eTotal += m->start[i*c + j];
 			}
 		}
 	}
 	if(activation == softmax){
 		for(int i=0; i<m->rows; i++){
 			for(int j=0; j<m->cols; j++){
-				(*m)[i][j] = (*m)[i][j] / eTotal;
+				m->start[i*c + j] /= eTotal;
 			}
 		}
 	}
@@ -107,14 +108,12 @@ void activate(Matrix* m, dataT (*activation)(dataT)){
 		
 		for(int i=0; i<d.rows; i++){
 			for(int j=0; j<d.cols; j++){
-				dataT x;
 				if(i==j){
-					x = (*m)[i][0] * (1 - (*m)[i][0]);	
+					d.start[i*r + j] = m->start[i*m->cols] * (1 - m->start[i*m->cols]);	
 				}
 				else{
-					x = -(*m)[i][0] * (*m)[j][0];		
+					d.start[i*r + j] = - (m->start[i*m->cols]) * m->start[j*m->cols];		
 				}
-				d[i][j] = x;
 			}
 		}
 

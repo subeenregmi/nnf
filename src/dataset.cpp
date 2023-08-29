@@ -8,11 +8,11 @@ void Dataset::getTrainingExample(int r, Matrix* x, Matrix* y){
 	
 	//copying values into x
 	for(int i=0; i<Inputs; i++){
-		(*x)[i][0] = (*TrainingData)[r][i];
+		x->start[i] = TrainingData->start[r*TrainingData->cols + i];
 	}
 	// copying values into y
 	for(int i=0; i<Outputs; i++){
-		(*y)[i][0] = (*TrainingData)[r][Inputs + i];
+		y->start[i] = TrainingData->start[r*TrainingData->cols + (Inputs + i)];
 	}
 }
 
@@ -24,11 +24,11 @@ void Dataset::getTestExample(int r, Matrix* x, Matrix* y){
 	
 	//copying values into x
 	for(int i=0; i<Inputs; i++){
-		(*x)[i][0] = (*TestData)[r][i];
+		x->start[i] = TestData->start[r*TestData->cols + i];
 	}
 	// copying values into y
 	for(int i=0; i<Outputs; i++){
-		(*y)[i][0] = (*TestData)[r][Inputs + i];
+		y->start[i] = TestData->start[r*TestData->cols + (Inputs + i)];
 	}
 }
 

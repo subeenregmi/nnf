@@ -13,6 +13,6 @@ int main(){
 
 	neuralnet.setloss(mse);
 	neuralnet.randomize();
-	neuralnet.train(50000, 8);
+	neuralnet.train(100000, 8);
 	neuralnet.test();
 }

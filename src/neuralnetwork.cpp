@@ -133,14 +133,14 @@ void NN::train(int epochs, int batchsize){
 					// last layer weights are updated using the inputs
 					for(int j=0; j<error.rows; j++){
 						for(int k=0; k<x.rows; k++){
-							(*(LayerChanges[lb]->w))[j][k] += x[k][0] * (error[j][0]) * LearningRate;
+							LayerChanges[lb]->w->start[j*LayerChanges[lb]->w->cols + k] += x.start[k] * error.start[j] * LearningRate;
 						}
 					}
 				}
 				else{
 					for(int j=0; j<error.rows; j++){
 						for(int k=0; k<Layers[lb-1]->a->rows; k++){
-							(*(LayerChanges[lb]->w))[j][k] += (*(Layers[lb-1]->a))[k][0] * (error[j][0]) * LearningRate;
+							LayerChanges[lb]->w->start[j*LayerChanges[lb]->w->cols + k] += Layers[lb-1]->a->start[k] * error.start[j] * LearningRate;
 						}
 					}	
 				}
@@ -174,7 +174,9 @@ void NN::train(int epochs, int batchsize){
 			LayerChanges[b]->clear();
 		}
 		epoch_loss /= Data->TrainingData->rows;
-		std::cout << "Training epoch " << ep+1 << "| Cost = " << epoch_loss << std::endl;
+		if(printFlag){
+			std::cout << "Training epoch " << ep+1 << "| Cost = " << epoch_loss << std::endl;
+		}
 	}
 
 	// free layer changes after finished training

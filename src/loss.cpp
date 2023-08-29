@@ -25,7 +25,7 @@ void applyloss(Matrix* l, Matrix* x, Matrix* y, dataT(*lossf)(dataT, dataT)){
 
 	for(int i=0; i<x->rows; i++){
 		for(int j=0; j<x->cols; j++){
-			(*l)[i][j] = lossf((*x)[i][j], (*y)[i][j]);
+			l->start[i*l->cols + j] = lossf(x->start[i*l->cols + j], y->start[i*l->cols + j]);
 		}
 	}
 }

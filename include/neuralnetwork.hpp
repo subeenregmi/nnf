@@ -16,6 +16,7 @@ class NN{
 		dataT(*LossFunction)(dataT, dataT);
 		dataT(*LossFunctionD)(dataT, dataT);
 		dataT LearningRate;
+		bool printFlag = true;
 
 		void randomize();
 		void forward(Matrix* x);

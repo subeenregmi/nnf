@@ -1,6 +1,6 @@
 NAME:=nnf.out
 COMPILER:=g++
-CURRENTMODEL:=quadratic
+CURRENTMODEL:=mnist
 CURRENTTEST:=tests
 
 INCLUDEDIR:=./include/
@@ -20,7 +20,7 @@ TESTOBJECTS:=$(patsubst %.cpp, %.o, $(TESTFILES))
 
 DEPFILES:= $(patsubst %.cpp, %.d, $(SRCFILES) $(MODELFILES) $(TESTFILES))
 
-OPT:=-O0
+OPT:=-Ofast
 DEPFLAGS:=-MP -MD 
 COMPILERFLAGS:= $(OPT) $(DEPFLAGS)-I$(INCLUDEDIR)
 
