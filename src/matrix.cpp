@@ -58,7 +58,6 @@ Matrix::Matrix(std::string filename){
 	}
 
 	file.close();
-
 }
 
 Matrix::~Matrix(){

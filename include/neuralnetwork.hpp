@@ -24,7 +24,7 @@ class NN{
 		void clear();
 		void setloss(dataT(*lossf)(dataT, dataT));
 		void train(int epochs=100, int batchsize=10);
-		void test();
+		void test(bool accuracy);
 		
 		NN(Matrix* l, Dataset* D, dataT lrate);
 		~NN();

@@ -188,7 +188,8 @@ void NN::train(int epochs, int batchsize){
 	}
 }
 
-void NN::test(){
+void NN::test(bool accuracy=false){
+	int success = 0;
 	dataT testL=0;
 	for(int i=0; i<Data->TestData->rows; i++){
 		Matrix x(Data->Inputs, 1);
@@ -204,9 +205,27 @@ void NN::test(){
 		applyloss(&l, &y_hat, &y, LossFunction);
 
 		//std::cout << "y: " << y[0][0] << ", y^: "<< y_hat[0][0] << std::endl;
+		if(accuracy){
+			int index = 0;
+			int highprobindex = 0;
+			for(int i=0; i<y.rows; i++){
+				if(y[i][0] == 1){
+					index = i;
+				}
+				if(y_hat[highprobindex][0] < y_hat[i][0]){
+					highprobindex = i;
+				}
+			}
+			if(index == highprobindex){
+				success++;	
+			}
+		}
 		testL+=l.total();
 	}
-	std::cout << "Total Test Loss: " << testL/Data->TestData->rows;
+	std::cout << "Total Test Loss: " << testL/Data->TestData->rows << std::endl;
+	std::cout << "Successes: " << success << std::endl;
+	dataT ac = (float)success / (float)Data->TestData->rows;
+	std::cout << "Test Accuracy: " << ac << "%" << std::endl;
 
 }
 
