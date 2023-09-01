@@ -15,6 +15,7 @@ int main(){
 	neuralnet.Layers[0]->setactivation(sigmoid);
 	neuralnet.Layers[1]->setactivation(softmax);
 	neuralnet.setloss(cel);
+	neuralnet.setreg(L2);
 
 	neuralnet.randomize();
 	std::cout << "Starting training..." << std::endl;

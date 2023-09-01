@@ -16,19 +16,18 @@ int main(){
 
 	neuralnet.randomize();
 	neuralnet.setloss(mse);
-	neuralnet.setreg(L2);
 	neuralnet.Lambda = 0.001f;
 	//neuralnet.printFlag = false;
 
 	neuralnet.train(1000000, 10);
 
-	/*
+/*
 	float totaltime = 0;
 	for(int i=0; i<10; i++){
-		float starttime = time(0);
+		int starttime = time(0);
 		neuralnet.train(100000, 10);
 		neuralnet.randomize();
-		float finishtime = time(0);
+		int finishtime = time(0);
 		totaltime += finishtime - starttime;
 		std::cout << "Test " << i << " Completed in " << finishtime-starttime << " seconds.\n";
 	}
@@ -36,7 +35,6 @@ int main(){
 	totaltime /= 10;
 
 	std::cout << "Average time taken: " << totaltime;
-
 */
 
 }

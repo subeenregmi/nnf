@@ -139,18 +139,30 @@ void NN::train(int epochs, int batchsize){
 					temp1.transpose();
 					temp1.dot(&error);
 				
-					Matrix temp(CurrentLayer->z->rows, CurrentLayer->z->cols);
+					/*
+					Matrix temp(CurrentLayer->z->rows, 1);
 					temp.copy(CurrentLayer->z);
 					activate(&temp, CurrentLayer->actfunctionD);
 
 					temp1.hproduct(&temp);
 
 					error.rows = temp1.rows;
-					error.cols = temp1.cols;
+					error.cols = 1;
 
 					free(error.start);
 					error.start = (dataT*)calloc(error.rows*error.cols, sizeof(dataT)); 
 					error.copy(&temp1);
+					*/
+
+					error.rows = CurrentLayer->z->rows; 
+					free(error.start);
+					error.start = (dataT*)calloc(error.rows, sizeof(dataT)); 
+
+					error.copy(CurrentLayer->z);
+					activate(&error, CurrentLayer->actfunctionD);
+					error.hproduct(&temp1);
+
+
 				}
 				
 				// weight changes
@@ -217,10 +229,15 @@ void NN::train(int epochs, int batchsize){
 				}
 				
 				// bias changes error=dcdb
+				/*
 				Matrix t(error.rows, error.cols);
 				t.copy(&error);
 				t.scale(LearningRate);
 				LayerChanges[lb]->b->add(&t);
+				*/
+				error.scale(LearningRate);
+				LayerChanges[lb]->b->add(&error);
+				error.scale(1/LearningRate);
 
 			}
 			
