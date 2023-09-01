@@ -9,6 +9,7 @@ int main(){
 	NN neuralnet(&l, &D, 0.01f);
 	neuralnet.Layers[0]->setactivation(linear);
 
+	neuralnet.setreg(L2);
 	neuralnet.setloss(mse);
 	neuralnet.train(100000, 5);
 	neuralnet.print();

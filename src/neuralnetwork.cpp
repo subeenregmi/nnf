@@ -87,11 +87,21 @@ void NN::train(int epochs, int batchsize){
 			Matrix l(Data->Outputs, 1);
 			applyloss(&l, &y_hat, &y, LossFunction);
 			if(Reg == L2){
-				for(Layer* x : Layers){
-					Matrix* w = x->w;
+				for(Layer* xa : Layers){
+					Matrix* w = xa->w;
 					for(int iw=0; iw<w->rows; iw++){
 						for(int jw=0; jw<w->cols; jw++){
 							reg_loss += pow(w->start[iw*w->cols + jw], 2);
+						}
+					}
+				}
+			}
+			if(Reg == L1){
+				for(Layer* xs : Layers){
+					Matrix* w = xs->w;
+					for(int iw=0; iw<w->rows; iw++){
+						for(int jw=0; jw<w->cols; jw++){
+							reg_loss += abs(w->start[iw*w->cols + jw]);
 						}
 					}
 				}
@@ -155,6 +165,15 @@ void NN::train(int epochs, int batchsize){
 							LayerChanges[lb]->w->start[j*LayerChanges[lb]->w->cols + k] += regl * LearningRate;
 							}
 
+							if(Reg == L1){
+								if(CurrentLayer->w->start[j*LayerChanges[lb]->w->cols + k] > 0){
+									LayerChanges[lb]->w->start[j*LayerChanges[lb]->w->cols + k] += Lambda;
+								}
+								else{
+									LayerChanges[lb]->w->start[j*LayerChanges[lb]->w->cols + k] -= Lambda;
+								}
+							}
+
 						}
 					}
 					/*
@@ -175,6 +194,14 @@ void NN::train(int epochs, int batchsize){
 							if(Reg == L2){
 								dataT regl =  (Lambda * CurrentLayer->w->start[j*LayerChanges[lb]->w->cols + k]) / (dataT)Data->TrainingData->rows;
 							LayerChanges[lb]->w->start[j*LayerChanges[lb]->w->cols + k] += regl * LearningRate;
+							}
+							if(Reg == L1){
+								if(CurrentLayer->w->start[j*LayerChanges[lb]->w->cols + k] >= 0){
+									LayerChanges[lb]->w->start[j*LayerChanges[lb]->w->cols + k] += Lambda;
+								}
+								else{
+									LayerChanges[lb]->w->start[j*LayerChanges[lb]->w->cols + k] -= Lambda;
+								}
 							}
 						}
 					}	
@@ -218,7 +245,12 @@ void NN::train(int epochs, int batchsize){
 			LayerChanges[b]->clear();
 		}
 		epoch_loss /= Data->TrainingData->rows;
-		reg_loss *= Lambda / (dataT)(2*Data->TrainingData->rows);
+		if(Reg == L2){
+			reg_loss *= Lambda / (dataT)(2*Data->TrainingData->rows);
+		}
+		if(Reg == L1){
+			reg_loss *= Lambda/(dataT)Data->TrainingData->rows;
+		}
 		epoch_loss += reg_loss;
 		if(printFlag){
 			std::cout << "Training epoch " << ep+1 << "| Cost = " << epoch_loss << std::endl;
