@@ -1,0 +1,7 @@
+L2 / Ridge regression
+
+- Finding a new line that doesnt fit the training data so well 
+- Increases bias, but decreases varaince, stops overfitting
+- Better long term predictions
+
+lambda x slope^2:

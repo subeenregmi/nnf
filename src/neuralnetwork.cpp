@@ -53,6 +53,10 @@ void NN::setloss(dataT(*lossf)(dataT, dataT)){
 	}
 }
 
+void NN::setreg(Regularizers r){
+	Reg = r;
+}
+
 void NN::train(int epochs, int batchsize){
 	// Create copy of network
 	std::vector<Layer*> LayerChanges; 
@@ -68,6 +72,7 @@ void NN::train(int epochs, int batchsize){
 
 	for(int ep=0; ep<epochs; ep++){
 		dataT epoch_loss = 0;
+		dataT reg_loss = 0;
 		for(int i=0; i<Data->TrainingData->rows; i++){
 
 			Matrix x(Data->Inputs, 1);
@@ -81,6 +86,16 @@ void NN::train(int epochs, int batchsize){
 
 			Matrix l(Data->Outputs, 1);
 			applyloss(&l, &y_hat, &y, LossFunction);
+			if(Reg == L2){
+				for(Layer* x : Layers){
+					Matrix* w = x->w;
+					for(int iw=0; iw<w->rows; iw++){
+						for(int jw=0; jw<w->cols; jw++){
+							reg_loss += pow(w->start[iw*w->cols + jw], 2);
+						}
+					}
+				}
+			}
 			epoch_loss += l.total();
 
 			// Backpropagation
@@ -134,15 +149,44 @@ void NN::train(int epochs, int batchsize){
 					for(int j=0; j<error.rows; j++){
 						for(int k=0; k<x.rows; k++){
 							LayerChanges[lb]->w->start[j*LayerChanges[lb]->w->cols + k] += x.start[k] * error.start[j] * LearningRate;
+
+							if(Reg == L2){
+								dataT regl =  (Lambda * CurrentLayer->w->start[j*LayerChanges[lb]->w->cols + k]) / (dataT)Data->TrainingData->rows;
+							LayerChanges[lb]->w->start[j*LayerChanges[lb]->w->cols + k] += regl * LearningRate;
+							}
+
 						}
 					}
+					/*
+					Matrix dcdw(error.rows, error.cols);
+					dcdw.copy(&error);
+					x.transpose();
+					dcdw.dot(&x);
+					x.transpose();
+					dcdw.scale(LearningRate);
+					LayerChanges[lb]->w->add(&dcdw);
+					*/
 				}
 				else{
 					for(int j=0; j<error.rows; j++){
 						for(int k=0; k<Layers[lb-1]->a->rows; k++){
 							LayerChanges[lb]->w->start[j*LayerChanges[lb]->w->cols + k] += Layers[lb-1]->a->start[k] * error.start[j] * LearningRate;
+
+							if(Reg == L2){
+								dataT regl =  (Lambda * CurrentLayer->w->start[j*LayerChanges[lb]->w->cols + k]) / (dataT)Data->TrainingData->rows;
+							LayerChanges[lb]->w->start[j*LayerChanges[lb]->w->cols + k] += regl * LearningRate;
+							}
 						}
 					}	
+					/*
+					Matrix dcdw(error.rows, error.cols);
+					dcdw.copy(&error);
+					Layers[lb-1]->a->transpose();
+					dcdw.dot(Layers[lb-1]->a);
+					Layers[lb-1]->a->transpose();
+					dcdw.scale(LearningRate);
+					LayerChanges[lb]->w->add(&dcdw);
+					*/
 				}
 				
 				// bias changes error=dcdb
@@ -174,6 +218,8 @@ void NN::train(int epochs, int batchsize){
 			LayerChanges[b]->clear();
 		}
 		epoch_loss /= Data->TrainingData->rows;
+		reg_loss *= Lambda / (dataT)(2*Data->TrainingData->rows);
+		epoch_loss += reg_loss;
 		if(printFlag){
 			std::cout << "Training epoch " << ep+1 << "| Cost = " << epoch_loss << std::endl;
 		}
@@ -188,7 +234,7 @@ void NN::train(int epochs, int batchsize){
 	}
 }
 
-void NN::test(bool accuracy=false){
+void NN::test(bool accuracy){
 	int success = 0;
 	dataT testL=0;
 	for(int i=0; i<Data->TestData->rows; i++){
@@ -223,10 +269,11 @@ void NN::test(bool accuracy=false){
 		testL+=l.total();
 	}
 	std::cout << "Total Test Loss: " << testL/Data->TestData->rows << std::endl;
-	std::cout << "Successes: " << success << std::endl;
-	dataT ac = (float)success / (float)Data->TestData->rows;
-	std::cout << "Test Accuracy: " << ac << "%" << std::endl;
-
+	if(accuracy){
+		std::cout << "Successes: " << success << std::endl;
+		dataT ac = (float)success / (float)Data->TestData->rows;
+		std::cout << "Test Accuracy: " << ac << "%" << std::endl;
+	}
 }
 
 NN::NN(Matrix* l, Dataset* D, dataT lrate){
@@ -234,6 +281,7 @@ NN::NN(Matrix* l, Dataset* D, dataT lrate){
 	LayerStructure = l;
 	Data = D;
 	LearningRate = lrate;	
+	Lambda = 0.001f;
 	
 	// check if any layer has zero or less neurons (illegal)
 	for(int i=0; i<l->cols; i++){
