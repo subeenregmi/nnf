@@ -10,8 +10,7 @@
 
 enum Regularizers{ 
 	L1,
-	L2,
-	dropout
+	L2
 };
 
 class NN{
@@ -27,7 +26,7 @@ class NN{
 		bool printFlag = true;
 
 		void randomize();
-		void forward(Matrix* x);
+		void forward(Matrix* x, bool testing=false);
 		void print();
 		void clear();
 		void setloss(dataT(*lossf)(dataT, dataT));

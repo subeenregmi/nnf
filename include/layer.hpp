@@ -15,15 +15,16 @@ class Layer{
 		Matrix* a;
 		dataT(*actfunction)(dataT);
 		dataT(*actfunctionD)(dataT);
+		dataT dropout;
 
 		void randomize();
-		void forward(Matrix* x);
+		void forward(Matrix* x, bool testing=false);
 		void setactivation(dataT(*act)(dataT));
 		void copy(Layer* x);
 		void clear();
 		void print(std::string label="");
 
-		Layer(int n, int nnext, dataT(*act)(dataT));
+		Layer(int n, int nnext, dataT(*act)(dataT), dataT dr=0.0f);
 		~Layer();
 };
 

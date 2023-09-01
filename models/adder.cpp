@@ -13,8 +13,9 @@ int main(){
 
 	neuralnet.setloss(mse);
 	neuralnet.randomize();
-	neuralnet.setreg(L1);
+	neuralnet.printFlag = false;
 	
+
 	neuralnet.train(1000000, 8);
 	neuralnet.test(false);
 }

@@ -5,7 +5,7 @@ void Layer::randomize(){
 	b->randomize();
 }
 
-void Layer::forward(Matrix* x){
+void Layer::forward(Matrix* x, bool testing){
 	assert(actfunction != nullptr);
 	Matrix c(w->rows, w->cols);
 	c.copy(w);
@@ -14,6 +14,14 @@ void Layer::forward(Matrix* x){
 	z->copy(&c);
 	a->copy(z);
 	activate(a, actfunction);
+	if(dropout != 0 && !testing)  {
+		for(int i=0; i<a->rows; i++){
+			if((dataT) rand() / (dataT) RAND_MAX < dropout){ 
+				a->start[i] = 0;
+			}
+			a->start[i] /= (1-dropout);
+		}
+	}
 }
 
 void Layer::setactivation(dataT(*act)(dataT)){
@@ -71,7 +79,7 @@ void Layer::print(std::string label){
 	a->print("Activated Sum " + label);
 }
 
-Layer::Layer(int n, int nnext, dataT(*act)(dataT)){
+Layer::Layer(int n, int nnext, dataT(*act)(dataT), dataT dr){
 	neurons = n;
 	setactivation(act);
 
@@ -84,6 +92,7 @@ Layer::Layer(int n, int nnext, dataT(*act)(dataT)){
 	b = bias;
 	z = zterms;
 	a = activations;
+	dropout = dr;
 }
 
 Layer::~Layer(){

@@ -1,6 +1,6 @@
 NAME:=nnf.out
 COMPILER:=g++
-CURRENTMODEL:=lineregnn
+CURRENTMODEL:=adder
 CURRENTTEST:=tests
 
 INCLUDEDIR:=./include/

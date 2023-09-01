@@ -9,12 +9,12 @@ void NN::randomize(){
 	}
 }
 
-void NN::forward(Matrix* x){
+void NN::forward(Matrix* x, bool testing){
 	for(int i=0; i<Layers.size(); i++){
 		if(Layers[i] == nullptr){
 			break;
 		}
-		Layers[i]->forward(x);
+		Layers[i]->forward(x, testing);
 		x = Layers[i]->a;
 	}	
 }
@@ -274,7 +274,7 @@ void NN::test(bool accuracy){
 		Matrix y(Data->Outputs, 1);
 
 		Data->getTestExample(i, &x, &y);
-		forward(&x);
+		forward(&x, true);
 
 		Matrix y_hat(Data->Outputs, 1);
 		y_hat.copy(Layers[LayerStructure->cols - 2]->a);
