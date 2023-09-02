@@ -1,6 +1,6 @@
 NAME:=nnf.out
 COMPILER:=g++
-CURRENTMODEL:=mnist
+CURRENTMODEL:=quadratic
 CURRENTTEST:=tests
 
 INCLUDEDIR:=./include/

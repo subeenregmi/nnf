@@ -215,7 +215,7 @@ dataT Matrix::total(){
 	dataT total = 0;
 	for(int i=0; i<rows; i++){
 		for(int j=0; j<cols; j++){
-			total += (*this)[i][j];
+			total += start[i*cols + j];
 		}
 	}
 	return total; 

@@ -13,7 +13,7 @@ int main(){
 
 	neuralnet.setloss(mse);
 	neuralnet.randomize();
-	neuralnet.printFlag = false;
+	//neuralnet.printFlag = false;
 	
 
 	neuralnet.train(1000000, 8);

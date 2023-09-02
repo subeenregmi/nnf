@@ -14,5 +14,5 @@ TODO:
 * 	Start working on convolutional nets
 *	Implement Tensors (Total Redo)
 *	Make way to share datasets and models
-* 	Add more optimisation techniques (Regularization)
+* 	~~Add more optimisation techniques (Regularization)~~
 * 	Implements RNNs

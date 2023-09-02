@@ -126,10 +126,14 @@ void NN::train(int epochs, int batchsize){
 					}
 					else{
 						applyloss(&error, &y_hat, &y, LossFunctionD);
+						/*
 						Matrix temp(Data->Outputs, 1);
 						temp.copy(CurrentLayer->z);
 						activate(&temp, CurrentLayer->actfunctionD);
 						error.hproduct(&temp);
+						*/
+						activate(CurrentLayer->z, CurrentLayer->actfunctionD);
+						error.hproduct(CurrentLayer->z);
 					}
 				}
 				else{
@@ -161,7 +165,6 @@ void NN::train(int epochs, int batchsize){
 					error.copy(CurrentLayer->z);
 					activate(&error, CurrentLayer->actfunctionD);
 					error.hproduct(&temp1);
-
 
 				}
 				

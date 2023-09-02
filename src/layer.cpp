@@ -7,6 +7,7 @@ void Layer::randomize(){
 
 void Layer::forward(Matrix* x, bool testing){
 	assert(actfunction != nullptr);
+
 	Matrix c(w->rows, w->cols);
 	c.copy(w);
 	c.dot(x);
@@ -14,6 +15,7 @@ void Layer::forward(Matrix* x, bool testing){
 	z->copy(&c);
 	a->copy(z);
 	activate(a, actfunction);
+
 	if(dropout != 0 && !testing)  {
 		for(int i=0; i<a->rows; i++){
 			if((dataT) rand() / (dataT) RAND_MAX < dropout){ 
