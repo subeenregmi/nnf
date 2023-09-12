@@ -4,13 +4,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checking out repo.
-      - uses: actions/checkout@v4
-      - name: Configuring CMake.
-      - run: cmake -S . -B build/
-      - name: Building project.
-      - run: cmake --build build
-      - name: Running tests.
-      - run: cd build/ && ctest
+      - name: Checking out repo
+        uses: actions/checkout@v4
 
-  
+      - name: Configuring CMake
+        run: cmake -S . -B build/
+        
+      - name: Building project
+        run: cmake --build build
+
+      - name: Running tests
+        run: |
+          cd build/
+          if ! ctest; then
+            echo "Tests failed"
+            exit 1
+          fi
