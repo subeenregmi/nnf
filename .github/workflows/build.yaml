@@ -1,16 +1,16 @@
 name: nnf github workflow
-on: [push pull_request]
+on: push
 jobs:
   build:
-    name: Build and test.
     runs-on: ubuntu-latest
     steps:
-      -run: actions/checkout@v4
-        name: Checking out repo.
-      -run: cmake -S . -B build/
-        name: Configuring CMake.
-      -run: cmake --build build
-        name: Building project.
-      -run: cd build/ && ctest
-        name: Running tests.
+      - name: Checking out repo.
+      - uses: actions/checkout@v4
+      - name: Configuring CMake.
+      - run: cmake -S . -B build/
+      - name: Building project.
+      - run: cmake --build build
+      - name: Running tests.
+      - run: cd build/ && ctest
+
   
