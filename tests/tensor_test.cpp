@@ -49,9 +49,15 @@ TEST(Tensor, Addition){
 	Tensor b(p, 4);
 	Tensor d(p, 4);
 	tnsrf::randomize(&a);
-
 	tnsrf::add(&d, &a, &b);
 	ASSERT_TRUE(tnsrf::tensorEqual(&d, &a));
+
+	tnsrf::randomize(&b);
+	tnsrf::add(&d, &a, &b);
+	for(int i=0; i<a.items; i++){
+		ASSERT_EQ((d.start)[i], (a.start)[i] + (b.start)[i]);
+	}
+
 
 
 }
