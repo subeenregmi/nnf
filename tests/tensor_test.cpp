@@ -123,6 +123,20 @@ TEST(Tensor, Hproduct){
 	for(int i=0; i<b.items; i++){
 		ASSERT_EQ((d.start)[i], (b.start)[i] * (a.start)[i]);
 	}
+}
+
+TEST(Tensor, Total){
+	int ad[5] = {1, 4, 2, 6, 4};
+	Tensor a(ad, 5);
+
+	ASSERT_EQ(tnsrf::total(&a), 0);
 	
+	tnsrf::randomize(&a);
+	dataT to = tnsrf::total(&a);
+	dataT top = 0;
+	for(int i=0; i<a.items; i++){
+		top += (a.start)[i];	
+	}
+	ASSERT_EQ(to, top);
 }
 

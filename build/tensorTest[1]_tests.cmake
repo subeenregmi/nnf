@@ -12,4 +12,6 @@ add_test([=[Tensor.Scaling]=]  /home/subeenregmi/Documents/code/nnf/build/tensor
 set_tests_properties([=[Tensor.Scaling]=]  PROPERTIES WORKING_DIRECTORY /home/subeenregmi/Documents/code/nnf/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
 add_test([=[Tensor.Hproduct]=]  /home/subeenregmi/Documents/code/nnf/build/tensorTest [==[--gtest_filter=Tensor.Hproduct]==] --gtest_also_run_disabled_tests)
 set_tests_properties([=[Tensor.Hproduct]=]  PROPERTIES WORKING_DIRECTORY /home/subeenregmi/Documents/code/nnf/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
-set(  tensorTest_TESTS Tensor.Instantiation Tensor.Items Tensor.Equality Tensor.Addition Tensor.Subtraction Tensor.Scaling Tensor.Hproduct)
+add_test([=[Tensor.Total]=]  /home/subeenregmi/Documents/code/nnf/build/tensorTest [==[--gtest_filter=Tensor.Total]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[Tensor.Total]=]  PROPERTIES WORKING_DIRECTORY /home/subeenregmi/Documents/code/nnf/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+set(  tensorTest_TESTS Tensor.Instantiation Tensor.Items Tensor.Equality Tensor.Addition Tensor.Subtraction Tensor.Scaling Tensor.Hproduct Tensor.Total)

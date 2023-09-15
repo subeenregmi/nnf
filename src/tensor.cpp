@@ -136,4 +136,13 @@ namespace tnsrf{
 			(d->start)[i] = (a->start)[i] * (b->start)[i];
 		}
 	}	
+
+	dataT total(Tensor* a){
+		dataT total = 0;
+		for(int i=0; i<a->items; i++){
+			total += (a->start)[i];
+		}
+		return total;
+	}
+
 }
