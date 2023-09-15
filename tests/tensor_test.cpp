@@ -107,3 +107,22 @@ TEST(Tensor, Scaling){
 	}
 	
 }
+
+TEST(Tensor, Hproduct){
+
+	int ad[4] = {23, 4, 66, 2};
+	Tensor a(ad, 4);
+	Tensor b(ad, 4);
+	Tensor d(ad, 4);
+	
+
+	tnsrf::randomize(&a);
+	tnsrf::randomize(&b);
+	tnsrf::hproduct(&d, &a, &b);
+
+	for(int i=0; i<b.items; i++){
+		ASSERT_EQ((d.start)[i], (b.start)[i] * (a.start)[i]);
+	}
+	
+}
+

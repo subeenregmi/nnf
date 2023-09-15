@@ -123,4 +123,17 @@ namespace tnsrf{
 			(a->start)[i] *= scalar; 
 		}
 	}
+
+	void hproduct(Tensor* d, Tensor* a, Tensor* b){
+		assert(a->rank == b->rank);
+		assert(a->rank == d->rank);
+		for(int i=0; i<a->rank; i++){
+			assert((a->dimensions)[i] == (b->dimensions)[i]);
+			assert((a->dimensions)[i] == (d->dimensions)[i]);
+		}
+
+		for(int i=0; i<a->items; i++){
+			(d->start)[i] = (a->start)[i] * (b->start)[i];
+		}
+	}	
 }

@@ -30,6 +30,7 @@ namespace tnsrf{
 	void add(Tensor* d, Tensor* a, Tensor* b);
 	void subtract(Tensor* d, Tensor* a, Tensor* b);
 	void scale(Tensor* a, dataT scalar);	
+	void hproduct(Tensor* d, Tensor* a, Tensor* b);
 }
 
 
