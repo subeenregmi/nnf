@@ -46,7 +46,24 @@ namespace tnsrf{
 			memslot += x*dmul;
 			i++;
 		}	
-
 		return tensor->start[memslot];
+	}
+
+	void copy(Tensor *to, Tensor* from){
+
+		assert(to->rank == from->rank); // ensure that dimensions all match up
+		for(int i=0; i<to->rank; i++){
+			assert((to->dimensions)[i] == (from->dimensions)[i]);
+		}
+
+		for(int i=0; i<to->items; i++){
+			(from->start[i]) = (to->start)[i];
+		}
+	}
+
+	void randomize(Tensor *t){
+		for(int i=0; i<t->items; i++){
+			(t->start)[i] = (dataT) rand() / (dataT) RAND_MAX;
+		}
 	}
 }
