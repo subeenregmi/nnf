@@ -2,4 +2,6 @@ add_test([=[Tensor.Instantiation]=]  /home/subeenregmi/Documents/code/nnf/build/
 set_tests_properties([=[Tensor.Instantiation]=]  PROPERTIES WORKING_DIRECTORY /home/subeenregmi/Documents/code/nnf/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
 add_test([=[Tensor.Items]=]  /home/subeenregmi/Documents/code/nnf/build/tensorTest [==[--gtest_filter=Tensor.Items]==] --gtest_also_run_disabled_tests)
 set_tests_properties([=[Tensor.Items]=]  PROPERTIES WORKING_DIRECTORY /home/subeenregmi/Documents/code/nnf/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
-set(  tensorTest_TESTS Tensor.Instantiation Tensor.Items)
+add_test([=[Tensor.Addition]=]  /home/subeenregmi/Documents/code/nnf/build/tensorTest [==[--gtest_filter=Tensor.Addition]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[Tensor.Addition]=]  PROPERTIES WORKING_DIRECTORY /home/subeenregmi/Documents/code/nnf/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+set(  tensorTest_TESTS Tensor.Instantiation Tensor.Items Tensor.Addition)

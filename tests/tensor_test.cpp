@@ -41,6 +41,17 @@ TEST(Tensor, Items){
 	ASSERT_EQ(tnsrf::getItem(&t, {0, 1, 1}), 0);
 	ASSERT_EQ(tnsrf::getItem(&t, {0, 0, 2}), 0);
 	ASSERT_EQ(tnsrf::getItem(&t, {0, 1, 2}), 0);
+}
 
-	
+TEST(Tensor, Addition){
+	int p[4] = {3, 3, 3, 3};
+	Tensor a(p, 4);
+	Tensor b(p, 4);
+	Tensor d(p, 4);
+	tnsrf::randomize(&a);
+
+	tnsrf::add(&d, &a, &b);
+	ASSERT_TRUE(tnsrf::tensorEqual(&d, &a));
+
+
 }

@@ -23,7 +23,7 @@ Tensor::~Tensor(){
 }
 
 namespace tnsrf{
-	dataT getItem(Tensor *tensor, std::initializer_list<int> index){
+	dataT getItem(Tensor* tensor, std::initializer_list<int> index){
 
 		int memslot = 0; 
 		int dmul = 0; // used to calculate index
@@ -49,7 +49,7 @@ namespace tnsrf{
 		return tensor->start[memslot];
 	}
 
-	void copy(Tensor *to, Tensor* from){
+	void copy(Tensor* to, Tensor* from){
 
 		assert(to->rank == from->rank); // ensure that dimensions all match up
 		for(int i=0; i<to->rank; i++){
@@ -61,15 +61,46 @@ namespace tnsrf{
 		}
 	}
 
-	void randomize(Tensor *t){
+	void randomize(Tensor* t){
 		for(int i=0; i<t->items; i++){
 			(t->start)[i] = (dataT) rand() / (dataT) RAND_MAX;
 		}
 	}
 
-	void clear(Tensor *t){
+	void clear(Tensor* t){
 		for(int i=0; i<t->items; i++){
 			(t->start)[i] = 0;
+		}
+	}
+
+	bool tensorEqual(Tensor* a, Tensor* b){
+		if(a->rank != b->rank){
+			return false;
+		}
+		for(int i=0; i<a->rank; i++){
+			if((a->dimensions)[i] != (b->dimensions)[i]){
+				return false;
+			}	
+		}			
+		
+		for(int i=0; i<a->items; i++){
+			if((a->start)[i] != (b->start)[i]){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	void add(Tensor* d, Tensor* a, Tensor* b){
+		assert(a->rank == b->rank);
+		assert(a->rank == d->rank);
+		for(int i=0; i<a->rank; i++){
+			assert((a->dimensions)[i] == (b->dimensions)[i]);
+			assert((a->dimensions)[i] == (d->dimensions)[i]);
+		}
+
+		for(int i=0; i<a->items; i++){
+			(d->start)[i] = (a->start)[i] + (b->start)[i];
 		}
 	}
 }
