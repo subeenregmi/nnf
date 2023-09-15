@@ -63,7 +63,8 @@ namespace tnsrf{
 
 	void randomize(Tensor* t){
 		for(int i=0; i<t->items; i++){
-			(t->start)[i] = (dataT) rand() / (dataT) RAND_MAX;
+			(t->start)[i] = ((dataT) rand() / (dataT) RAND_MAX) - 0.5;
+			// this will get us a float between 0.5 to -0.5
 		}
 	}
 
@@ -74,16 +75,16 @@ namespace tnsrf{
 	}
 
 	bool tensorEqual(Tensor* a, Tensor* b){
-		if(a->rank != b->rank){
+		if(a->rank != b->rank){ // ensure ranks are the same
 			return false;
 		}
-		for(int i=0; i<a->rank; i++){
+		for(int i=0; i<a->rank; i++){ // ensure dimensions are the same
 			if((a->dimensions)[i] != (b->dimensions)[i]){
 				return false;
 			}	
 		}			
 		
-		for(int i=0; i<a->items; i++){
+		for(int i=0; i<a->items; i++){ // ensure items are the same
 			if((a->start)[i] != (b->start)[i]){
 				return false;
 			}
@@ -97,10 +98,23 @@ namespace tnsrf{
 		for(int i=0; i<a->rank; i++){
 			assert((a->dimensions)[i] == (b->dimensions)[i]);
 			assert((a->dimensions)[i] == (d->dimensions)[i]);
-		}
+		} // ensure a and b are compatible to add together and that d is compatible
 
 		for(int i=0; i<a->items; i++){
 			(d->start)[i] = (a->start)[i] + (b->start)[i];
 		}
 	}
+
+	void subtract(Tensor* d, Tensor* a, Tensor* b){
+		assert(a->rank == b->rank);
+		assert(a->rank == d->rank);
+		for(int i=0; i<a->rank; i++){
+			assert((a->dimensions)[i] == (b->dimensions)[i]);
+			assert((a->dimensions)[i] == (d->dimensions)[i]);
+		}
+
+		for(int i=0; i<a->items; i++){
+			(d->start)[i] = (a->start)[i] - (b->start)[i];
+		}
+	}	
 }

@@ -43,6 +43,20 @@ TEST(Tensor, Items){
 	ASSERT_EQ(tnsrf::getItem(&t, {0, 1, 2}), 0);
 }
 
+TEST(Tensor, Equality){
+	int bd[6] = {1, 5, 2, 7, 2, 3};
+	int ad[5] = {5, 2, 5, 2, 1};
+	Tensor b(bd, 6);
+	Tensor a(ad, 5);
+	Tensor bcopy(bd, 6);	
+
+	tnsrf::randomize(&b);
+	tnsrf::copy(&bcopy, &b);
+
+	EXPECT_FALSE(tnsrf::tensorEqual(&a, &b));
+	EXPECT_TRUE(tnsrf::tensorEqual(&bcopy, &b));
+}
+
 TEST(Tensor, Addition){
 	int p[4] = {3, 3, 3, 3};
 	Tensor a(p, 4);
@@ -57,7 +71,23 @@ TEST(Tensor, Addition){
 	for(int i=0; i<a.items; i++){
 		ASSERT_EQ((d.start)[i], (a.start)[i] + (b.start)[i]);
 	}
+}
 
+TEST(Tensor, Subtraction){
+	int p[4] = {3, 3, 3, 3};
+	Tensor a(p, 4);
+	Tensor b(p, 4);
+	Tensor d(p, 4);
 
+	tnsrf::randomize(&a);
+	tnsrf::subtract(&d, &a, &b);
 
+	EXPECT_TRUE(tnsrf::tensorEqual(&a, &d));
+
+	tnsrf::randomize(&b);
+	tnsrf::subtract(&d, &a, &b);
+
+	for(int i=0; i<a.items; i++){
+		ASSERT_EQ((d.start)[i], (a.start)[i] - (b.start)[i]);
+	}
 }
