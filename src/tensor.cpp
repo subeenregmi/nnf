@@ -145,4 +145,22 @@ namespace tnsrf{
 		return total;
 	}
 
+	void dot2d(Tensor* d, Tensor* a, Tensor* b){
+		assert(a->rank == 2);
+		assert(a->rank == b->rank);
+		assert(a->rank == d->rank);
+
+		assert(a->dimensions[1] == b->dimensions[0]);
+		assert(d->dimensions[0] == a->dimensions[0]);
+		assert(d->dimensions[1] == b->dimensions[1]);
+
+		for(int i=0; i<a->dimensions[0]; i++){
+			for(int j=0; j<b->dimensions[1]; j++){
+				for(int k=0; k<a->dimensions[1]; k++){
+					(d->start)[i*a->dimensions[1] + j] += (a->start)[i*a->dimensions[1] + k] * (b->start)[k*b->dimensions[1] + j];	
+				}
+			}
+		}
+	}
+
 }

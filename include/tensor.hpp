@@ -32,6 +32,7 @@ namespace tnsrf{
 	void scale(Tensor* a, dataT scalar);	
 	void hproduct(Tensor* d, Tensor* a, Tensor* b);
 	dataT total(Tensor* a);
+	void dot2d(Tensor* d, Tensor* a, Tensor* b); // a * b
 }
 
 

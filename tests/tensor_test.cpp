@@ -140,3 +140,19 @@ TEST(Tensor, Total){
 	ASSERT_EQ(to, top);
 }
 
+TEST(Tensor, DotProduct){
+	
+	int ad[2] = {2, 2};
+	Tensor a(ad, 2);
+	Tensor b(ad, 2);
+	Tensor c(ad, 2);
+
+	tnsrf::randomize(&a);
+	
+	tnsrf::dot2d(&c, &a, &b);
+
+	ASSERT_EQ(tnsrf::total(&c), 0);
+
+	
+}
+
