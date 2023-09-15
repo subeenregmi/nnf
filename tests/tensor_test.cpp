@@ -22,4 +22,14 @@ TEST(Tensor, Items){
 
 	ASSERT_NE(tnsrf::getItem(&t, {0, 0, 0}), 0);
 
+	Tensor c(p, 3);
+
+	tnsrf::copy(&c, &t);
+
+	ASSERT_EQ(tnsrf::getItem(&t, {0, 0, 0}), tnsrf::getItem(&c, {0, 0, 0}));
+	ASSERT_EQ(tnsrf::getItem(&t, {0, 1, 0}), tnsrf::getItem(&c, {0, 1, 0}));
+	ASSERT_EQ(tnsrf::getItem(&t, {0, 0, 1}), tnsrf::getItem(&c, {0, 0, 1}));
+	ASSERT_EQ(tnsrf::getItem(&t, {0, 1, 1}), tnsrf::getItem(&c, {0, 1, 1}));
+	ASSERT_EQ(tnsrf::getItem(&t, {0, 0, 2}), tnsrf::getItem(&c, {0, 0, 2}));
+	ASSERT_EQ(tnsrf::getItem(&t, {0, 1, 2}), tnsrf::getItem(&c, {0, 1, 2}));
 }
