@@ -66,4 +66,10 @@ namespace tnsrf{
 			(t->start)[i] = (dataT) rand() / (dataT) RAND_MAX;
 		}
 	}
+
+	void clear(Tensor *t){
+		for(int i=0; i<t->items; i++){
+			(t->start)[i] = 0;
+		}
+	}
 }

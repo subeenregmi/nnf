@@ -24,6 +24,7 @@ namespace tnsrf{
 	dataT getItem(Tensor *tensor, std::initializer_list<int> index);
 	void copy(Tensor *to, Tensor *from);
 	void randomize(Tensor *t);
+	void clear(Tensor *t);
 
 }
 
