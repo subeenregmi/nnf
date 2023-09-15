@@ -8,4 +8,6 @@ add_test([=[Tensor.Addition]=]  /home/subeenregmi/Documents/code/nnf/build/tenso
 set_tests_properties([=[Tensor.Addition]=]  PROPERTIES WORKING_DIRECTORY /home/subeenregmi/Documents/code/nnf/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
 add_test([=[Tensor.Subtraction]=]  /home/subeenregmi/Documents/code/nnf/build/tensorTest [==[--gtest_filter=Tensor.Subtraction]==] --gtest_also_run_disabled_tests)
 set_tests_properties([=[Tensor.Subtraction]=]  PROPERTIES WORKING_DIRECTORY /home/subeenregmi/Documents/code/nnf/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
-set(  tensorTest_TESTS Tensor.Instantiation Tensor.Items Tensor.Equality Tensor.Addition Tensor.Subtraction)
+add_test([=[Tensor.Scaling]=]  /home/subeenregmi/Documents/code/nnf/build/tensorTest [==[--gtest_filter=Tensor.Scaling]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[Tensor.Scaling]=]  PROPERTIES WORKING_DIRECTORY /home/subeenregmi/Documents/code/nnf/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+set(  tensorTest_TESTS Tensor.Instantiation Tensor.Items Tensor.Equality Tensor.Addition Tensor.Subtraction Tensor.Scaling)

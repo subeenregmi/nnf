@@ -117,4 +117,10 @@ namespace tnsrf{
 			(d->start)[i] = (a->start)[i] - (b->start)[i];
 		}
 	}	
+
+	void scale(Tensor* a, dataT scalar){
+		for(int i=0; i<a->items; i++){
+			(a->start)[i] *= scalar; 
+		}
+	}
 }

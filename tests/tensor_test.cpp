@@ -91,3 +91,19 @@ TEST(Tensor, Subtraction){
 		ASSERT_EQ((d.start)[i], (a.start)[i] - (b.start)[i]);
 	}
 }
+
+TEST(Tensor, Scaling){
+
+	int ad[4] = {23, 4, 66, 2};
+	Tensor a(ad, 4);
+	Tensor b(ad, 4);
+
+	tnsrf::randomize(&a);
+	tnsrf::copy(&b, &a);
+	tnsrf::scale(&b, 2.0);
+
+	for(int i=0; i<b.items; i++){
+		ASSERT_EQ((b.start)[i], 2 * (a.start)[i]);
+	}
+	
+}
