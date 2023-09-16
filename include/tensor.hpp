@@ -1,12 +1,12 @@
 #pragma once
 
-typedef double dataT;
 #include <cstdlib>
 #include <cassert>
 #include <iostream>
 #include <initializer_list>
 #include <cstdlib>
 #include <time.h>
+#include "generic.hpp"
 
 class Tensor{
 	public: 

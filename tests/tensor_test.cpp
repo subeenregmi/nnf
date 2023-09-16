@@ -186,8 +186,6 @@ TEST(Tensor, Tranpose){
 
 	tnsrf::transpose2d(&c, &b);
 	ASSERT_TRUE(tnsrf::tensorEqual(&c, &a));
-
-
 }
 
 
