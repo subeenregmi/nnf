@@ -8,7 +8,7 @@ TEST(Tensor, Instantiation) {
 	ASSERT_EQ(t.items, 6);
 }
 
-TEST(Tensor, Items){
+TEST(Tensor, getItems){
 	int p[3] = {1, 2, 3};
 	Tensor t(p, 3);
 	ASSERT_EQ(tnsrf::getItem(&t, {0, 0, 0}), 0);
@@ -41,6 +41,18 @@ TEST(Tensor, Items){
 	ASSERT_EQ(tnsrf::getItem(&t, {0, 1, 1}), 0);
 	ASSERT_EQ(tnsrf::getItem(&t, {0, 0, 2}), 0);
 	ASSERT_EQ(tnsrf::getItem(&t, {0, 1, 2}), 0);
+}
+
+TEST(Tensor, setItem){
+	int ad[2] = {2, 2};
+	Tensor a(ad, 2);
+
+	tnsrf::setItem(&a, {0, 0}, 1);
+	tnsrf::setItem(&a, {0, 1}, 1);
+	tnsrf::setItem(&a, {1, 0}, 1);
+	tnsrf::setItem(&a, {1, 1}, 1);
+
+	EXPECT_EQ(tnsrf::total(&a), 4);
 }
 
 TEST(Tensor, Equality){
@@ -152,7 +164,12 @@ TEST(Tensor, DotProduct){
 	tnsrf::dot2d(&c, &a, &b);
 
 	ASSERT_EQ(tnsrf::total(&c), 0);
+	tnsrf::setItem(&b, {0, 0}, 1);
+	tnsrf::setItem(&b, {1, 1}, 1);
+	tnsrf::dot2d(&c, &a, &b);
+	ASSERT_TRUE(tnsrf::tensorEqual(&c, &a));
 
 	
 }
+
 

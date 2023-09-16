@@ -22,6 +22,7 @@ class Tensor{
 // functions relating to tensors 
 namespace tnsrf{
 	dataT getItem(Tensor* tensor, std::initializer_list<int> index);
+	void setItem(Tensor* tensor, std::initializer_list<int> index, dataT val);
 	void copy(Tensor* to, Tensor* from);
 	void randomize(Tensor* t);
 	void clear(Tensor* t);

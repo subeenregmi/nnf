@@ -26,11 +26,15 @@ namespace tnsrf{
 	dataT getItem(Tensor* tensor, std::initializer_list<int> index){
 
 		int memslot = 0; 
-		int dmul = 0; // used to calculate index
+		int dmul = 1; // used to calculate index
 		int i=0;
+		int first=0;
 
 		for(int x : index){ // check if index is valid and bounded between dimensions
 			if(i==0){
+				first = x;
+			}
+			if(i==1){
 				memslot+=x;
 			}
 			assert(x > -1);
@@ -39,15 +43,89 @@ namespace tnsrf{
 		}
 
 		assert(i == tensor->rank); // making sure the index has exactly n dimensions
-		i=0;
 
-		for(int x : index){ // calculate memory location
-			dmul *= tensor->dimensions[i];
+		if(tensor->rank == 0){ // if scalar just return the first element
+			return tensor->start[0];
+		}
+
+		if(tensor->rank == 1){ // if rank 1 tensor (array) return element that was indexed
+			return tensor->start[first];
+		}
+
+		if(tensor->rank == 2){ // if matrix return x*cols + y (i*cols + j)
+			assert((memslot + first*tensor->dimensions[1]) < tensor->items);
+			return tensor->start[memslot + first*tensor->dimensions[1]];
+		}
+
+		i=0; 
+		memslot += first*tensor->dimensions[1];
+		dmul = tensor->dimensions[0] * tensor->dimensions[1];
+
+		for(int x: index){ // if n dimensional follow algo
+			if(i==0 || i==1){
+				i++;
+				continue;	
+			}
 			memslot += x*dmul;
+			dmul *= tensor->dimensions[i];
 			i++;
-		}	
+		}
+
+		assert(memslot < tensor->items); // last check 
 		return tensor->start[memslot];
 	}
+	
+	void setItem(Tensor* tensor, std::initializer_list<int> index, dataT val){
+		
+		int memslot = 0; 
+		int dmul = 1; // used to calculate index
+		int i=0;
+		int first=0;
+
+		for(int x : index){ // check if index is valid and bounded between dimensions
+			if(i==0){
+				first = x;
+			}
+			if(i==1){
+				memslot+=x;
+			}
+			assert(x > -1);
+			assert(tensor->dimensions[i] > x);
+			i++;
+		}
+
+		assert(i == tensor->rank); // making sure the index has exactly n dimensions
+
+		if(tensor->rank == 0){ // if scalar just return the first element
+			tensor->start[0] = val;
+		}
+
+		if(tensor->rank == 1){ // if rank 1 tensor (array) return element that was indexed
+			tensor->start[first] = val;
+		}
+
+		if(tensor->rank == 2){ // if matrix return x*cols + y (i*cols + j)
+			assert((memslot + first*tensor->dimensions[1]) < tensor->items);
+			tensor->start[memslot + first*tensor->dimensions[1]] = val;
+		}
+
+		i=0; 
+		memslot += first*tensor->dimensions[1];
+		dmul = tensor->dimensions[0] * tensor->dimensions[1];
+
+		for(int x: index){ // if n dimensional follow algo
+			if(i==0 || i==1){
+				i++;
+				continue;	
+			}
+			memslot += x*dmul;
+			dmul *= tensor->dimensions[i];
+			i++;
+		}
+
+		assert(memslot < tensor->items); // last check 
+		tensor->start[memslot] = val;
+}
 
 	void copy(Tensor* to, Tensor* from){
 
@@ -140,6 +218,7 @@ namespace tnsrf{
 	dataT total(Tensor* a){
 		dataT total = 0;
 		for(int i=0; i<a->items; i++){
+			std::cout << i << " " << (a->start)[i] << " ";
 			total += (a->start)[i];
 		}
 		return total;
@@ -162,5 +241,4 @@ namespace tnsrf{
 			}
 		}
 	}
-
 }
