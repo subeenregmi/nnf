@@ -18,4 +18,6 @@ add_test([=[Tensor.Total]=]  /home/subeenregmi/Documents/code/nnf/build/tensorTe
 set_tests_properties([=[Tensor.Total]=]  PROPERTIES WORKING_DIRECTORY /home/subeenregmi/Documents/code/nnf/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
 add_test([=[Tensor.DotProduct]=]  /home/subeenregmi/Documents/code/nnf/build/tensorTest [==[--gtest_filter=Tensor.DotProduct]==] --gtest_also_run_disabled_tests)
 set_tests_properties([=[Tensor.DotProduct]=]  PROPERTIES WORKING_DIRECTORY /home/subeenregmi/Documents/code/nnf/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
-set(  tensorTest_TESTS Tensor.Instantiation Tensor.getItems Tensor.setItem Tensor.Equality Tensor.Addition Tensor.Subtraction Tensor.Scaling Tensor.Hproduct Tensor.Total Tensor.DotProduct)
+add_test([=[Tensor.Tranpose]=]  /home/subeenregmi/Documents/code/nnf/build/tensorTest [==[--gtest_filter=Tensor.Tranpose]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[Tensor.Tranpose]=]  PROPERTIES WORKING_DIRECTORY /home/subeenregmi/Documents/code/nnf/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+set(  tensorTest_TESTS Tensor.Instantiation Tensor.getItems Tensor.setItem Tensor.Equality Tensor.Addition Tensor.Subtraction Tensor.Scaling Tensor.Hproduct Tensor.Total Tensor.DotProduct Tensor.Tranpose)

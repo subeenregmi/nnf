@@ -218,7 +218,6 @@ namespace tnsrf{
 	dataT total(Tensor* a){
 		dataT total = 0;
 		for(int i=0; i<a->items; i++){
-			std::cout << i << " " << (a->start)[i] << " ";
 			total += (a->start)[i];
 		}
 		return total;
@@ -238,6 +237,20 @@ namespace tnsrf{
 				for(int k=0; k<a->dimensions[1]; k++){
 					(d->start)[i*a->dimensions[1] + j] += (a->start)[i*a->dimensions[1] + k] * (b->start)[k*b->dimensions[1] + j];	
 				}
+			}
+		}
+	}
+
+	void transpose2d(Tensor *d, Tensor* a){
+		assert(d->rank == a->rank);
+		assert(a->rank == 2);				
+
+		assert(d->dimensions[0] == a->dimensions[1]);
+		assert(d->dimensions[1] == a->dimensions[0]);
+
+		for(int i=0; i<a->dimensions[0]; i++){
+			for(int j=0; j<a->dimensions[1]; j++){
+				(d->start)[j*a->dimensions[0] + i] = (a->start)[i*a->dimensions[1]+ j];
 			}
 		}
 	}

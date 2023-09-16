@@ -1,5 +1,4 @@
-#ifndef TENSOR
-#define TENSOR
+#pragma once
 
 typedef double dataT;
 #include <cstdlib>
@@ -34,7 +33,5 @@ namespace tnsrf{
 	void hproduct(Tensor* d, Tensor* a, Tensor* b);
 	dataT total(Tensor* a);
 	void dot2d(Tensor* d, Tensor* a, Tensor* b); // a * b
+	void transpose2d(Tensor* d, Tensor* a);
 }
-
-
-#endif // TENSOR

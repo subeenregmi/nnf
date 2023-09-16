@@ -168,8 +168,26 @@ TEST(Tensor, DotProduct){
 	tnsrf::setItem(&b, {1, 1}, 1);
 	tnsrf::dot2d(&c, &a, &b);
 	ASSERT_TRUE(tnsrf::tensorEqual(&c, &a));
+}
 
-	
+TEST(Tensor, Tranpose){
+
+	int ad[2] = {2, 4};
+	int bd[2] = {4, 2};
+	int cd[2] = {2, 4};
+
+	Tensor a(ad, 2);
+	Tensor b(bd, 2);
+	Tensor c(cd, 2);
+
+	tnsrf::randomize(&a);
+	tnsrf::transpose2d(&b, &a);
+	ASSERT_EQ(tnsrf::total(&a), tnsrf::total(&b));
+
+	tnsrf::transpose2d(&c, &b);
+	ASSERT_TRUE(tnsrf::tensorEqual(&c, &a));
+
+
 }
 
 
