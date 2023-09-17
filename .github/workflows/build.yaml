@@ -16,5 +16,4 @@ jobs:
       - name: Running tests
         run: |
           cd build/
-          ./tensorTest
-          ./lossTest
+          ctest
