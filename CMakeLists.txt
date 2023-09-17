@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(NNF) 
-add_library(NNF src/tensor.cpp src/loss.cpp)
+add_library(NNF src/tensor.cpp src/loss.cpp src/activations.cpp)
 
 target_include_directories(NNF PUBLIC $(PROJECT_SOURCE_DIR)include)
 
@@ -20,6 +20,7 @@ enable_testing()
 
 add_executable(tensorTest tests/tensor_test.cpp)
 add_executable(lossTest tests/loss_test.cpp)
+add_executable(activationTest tests/activation_test.cpp)
 
 target_link_libraries(tensorTest GTest::gtest_main)
 target_link_libraries(tensorTest NNF)
@@ -29,5 +30,11 @@ target_link_libraries(lossTest GTest::gtest_main)
 target_link_libraries(lossTest NNF)
 target_include_directories(lossTest PUBLIC $(PROJECT_SOURCE_DIR)include)
 
+target_link_libraries(activationTest GTest::gtest_main)
+target_link_libraries(activationTest NNF)
+target_include_directories(activationTest PUBLIC $(PROJECT_SOURCE_DIR)include)
+
 include(GoogleTest)
-gtest_discover_tests(tensorTest lossTest)
+gtest_discover_tests(tensorTest)
+gtest_discover_tests(lossTest)
+gtest_discover_tests(activationTest)

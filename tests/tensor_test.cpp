@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include "tensor.hpp"
 
-// Demonstrate some basic assertions.
 TEST(Tensor, Instantiation) {
 	int p[3] = {1, 2, 3};
 	Tensor t(p, 3);
