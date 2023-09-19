@@ -21,17 +21,17 @@ namespace tnsrf_act{
 	}
 
 	dataT relu(dataT x){
-		if(x<=0){
-			return 0;
+		if(x>0){
+			return x;
 		}
-		return x;
+		return 0;
 	}
 
 	dataT reluD(dataT x){
-		if(x<=0){
-			return 0;
+		if(x>0){
+			return 1;
 		}
-		return 1;
+		return 0;
 	}
 
 	dataT Ntanh(dataT x){
@@ -48,20 +48,20 @@ namespace tnsrf_act{
 
 	dataT leakyreluD(dataT x){
 		if(x>0){
-			return x;
+			return 1;
 		}
 		return LEAKY_RELU_SLOPE;
 	}
 
 	dataT elu(dataT x){
-		if(x >= 0){
+		if(x > 0){
 			return x;
 		}
 		return (exp(x) - 1) * ELU_SLOPE;
 	}
 
 	dataT eluD(dataT x){
-		if(x >= 0){
+		if(x > 0){
 			return 1;
 		}
 		return elu(x) * ELU_SLOPE;

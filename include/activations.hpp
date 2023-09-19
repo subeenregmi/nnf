@@ -5,6 +5,7 @@
 #include "generic.hpp"
 
 namespace tnsrf_act{
+
 	dataT linear(dataT x);
 	dataT linearD(dataT x);
 
