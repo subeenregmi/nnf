@@ -68,6 +68,19 @@ TEST(Tensor, Equality){
 	EXPECT_TRUE(tnsrf::tensorEqual(&bcopy, &b));
 }
 
+TEST(Tensor, Reshape){
+	int ad[3] = {1, 2, 3};
+	Tensor a(ad, 3);
+	
+	int nd[3] = {3, 3, 3};
+	tnsrf::reshape(&a, nd, 3);
+
+	EXPECT_EQ(a.items, 27);
+
+	tnsrf::setItem(&a, {2, 2, 2}, 10);
+	EXPECT_EQ(tnsrf::getItem(&a, {2, 2, 2}), 10);
+}
+
 TEST(Tensor, Addition){
 	int p[4] = {3, 3, 3, 3};
 	Tensor a(p, 4);

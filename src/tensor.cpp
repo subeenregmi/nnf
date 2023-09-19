@@ -170,6 +170,20 @@ namespace tnsrf{
 		return true;
 	}
 
+	void reshape(Tensor* a, int newd[], int rank){
+		int newitems = 1;
+		for(int i=0; i<rank; i++){
+			assert(newd[i] != 0);
+			newitems *= newd[i];
+		}
+		free(a->start);
+		a->items = newitems;
+		a->rank = rank;
+		a->dimensions = newd;
+		a->start = (dataT*)calloc(newitems, sizeof(dataT)); 
+	}
+	
+
 	void add(Tensor* d, Tensor* a, Tensor* b){
 		assert(a->rank == b->rank);
 		assert(a->rank == d->rank);

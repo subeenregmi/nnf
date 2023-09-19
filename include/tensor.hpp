@@ -26,6 +26,7 @@ namespace tnsrf{
 	void randomize(Tensor* t);
 	void clear(Tensor* t);
 	bool tensorEqual(Tensor* a, Tensor* b);
+	void reshape(Tensor* a, int newd[], int rank);
 
 	void add(Tensor* d, Tensor* a, Tensor* b);
 	void subtract(Tensor* d, Tensor* a, Tensor* b);
