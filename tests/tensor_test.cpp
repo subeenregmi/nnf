@@ -46,12 +46,24 @@ TEST(Tensor, setItem){
 	int ad[2] = {2, 2};
 	Tensor a(ad, 2);
 
+
 	tnsrf::setItem(&a, {0, 0}, 1);
 	tnsrf::setItem(&a, {0, 1}, 1);
 	tnsrf::setItem(&a, {1, 0}, 1);
 	tnsrf::setItem(&a, {1, 1}, 1);
 
 	EXPECT_EQ(tnsrf::total(&a), 4);
+
+	int bd[1] = {6};
+	Tensor b(bd, 1);
+
+	tnsrf::setItem(&b, {0}, 1);
+	tnsrf::setItem(&b, {1}, 1);
+	tnsrf::setItem(&b, {2}, 1);
+	tnsrf::setItem(&b, {3}, 1);
+
+	EXPECT_EQ(tnsrf::total(&b), 4);
+
 }
 
 TEST(Tensor, Equality){

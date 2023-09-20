@@ -99,32 +99,31 @@ namespace tnsrf{
 		if(tensor->rank == 0){ // if scalar just return the first element
 			tensor->start[0] = val;
 		}
-
-		if(tensor->rank == 1){ // if rank 1 tensor (array) return element that was indexed
+		else if(tensor->rank == 1){ // if rank 1 tensor (array) return element that was indexed
 			tensor->start[first] = val;
 		}
-
-		if(tensor->rank == 2){ // if matrix return x*cols + y (i*cols + j)
+		else if(tensor->rank == 2){ // if matrix return x*cols + y (i*cols + j)
 			assert((memslot + first*tensor->dimensions[1]) < tensor->items);
 			tensor->start[memslot + first*tensor->dimensions[1]] = val;
 		}
+		else{
+			i=0; 
+			memslot += first*tensor->dimensions[1];
+			dmul = tensor->dimensions[0] * tensor->dimensions[1];
 
-		i=0; 
-		memslot += first*tensor->dimensions[1];
-		dmul = tensor->dimensions[0] * tensor->dimensions[1];
-
-		for(int x: index){ // if n dimensional follow algo
-			if(i==0 || i==1){
+			for(int x: index){ // if n dimensional follow algo
+				if(i==0 || i==1){
+					i++;
+					continue;	
+				}
+				memslot += x*dmul;
+				dmul *= tensor->dimensions[i];
 				i++;
-				continue;	
 			}
-			memslot += x*dmul;
-			dmul *= tensor->dimensions[i];
-			i++;
-		}
 
-		assert(memslot < tensor->items); // last check 
-		tensor->start[memslot] = val;
+			assert(memslot < tensor->items); // last check 
+			tensor->start[memslot] = val;
+		}
 }
 
 	void copy(Tensor* to, Tensor* from){
