@@ -1,5 +1,0 @@
-if(EXISTS "/home/subeen/subeenfiles/code/nnf/build/tensorTest[1]_tests.cmake")
-  include("/home/subeen/subeenfiles/code/nnf/build/tensorTest[1]_tests.cmake")
-else()
-  add_test(tensorTest_NOT_BUILT tensorTest_NOT_BUILT)
-endif()
